@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <header>
+    <script src="js/d3/d3.min.js"></script>
+    <script src="js/stackedGraph.js"></script>
+    <script src="js/overlappedGraph.js"></script>
+    <script src="js/jquery-3.5.1.slim.min.js"></script>
+    <script src="data/raw_data.js"></script>
+  </header>
+  
+  <div id="data-vis-result" class="container">
+  </div>
+    
+  <script>
+    $(document).ready(function () {
+  
+      visualizeData(graphData);
+  
+      function visualizeData(rawData) {
+        const ranges = "1-5, 7-9";
+        const viewMode = "overlapped";
+        const downSampling = 2;
+  
+        if (viewMode == 'overlapped') {
+          setUpOverlappedGraph(rawData);
+        }
+  
+        ranges.split(",").forEach(range => {
+          const l = parseInt(range.trim().split("-")[0]);
+          const r = parseInt(range.trim().split("-")[1]) + 1;
+  
+          for (let i = l; i < r; i++) {
+            const data = rawData['trace'][i]['c3'].map(
+                (value, index) => ({value, time: index})).filter(
+                (v, samplePoint) => samplePoint % downSampling == 0);
+            if (viewMode === 'stacked') {
+              drawStackedGraph(data, i);
+            } else {
+              addLine(data, i);
+            }
+          }
+        })
+      }
+    });
+  
+  
+  </script>
+  
+</html>
