@@ -31,6 +31,6 @@ storiesOf('LineChart', module).add('Default', () => (
     xDomain={[0, 900]}
     yDomain={[-300, 300]}
     data={data}
-    margin={{ top: 50, left: 50, right: 50, bottom: 50 }}
+    margin={{ top: 50, left: 50, right: 50, bottom: 200 }}
   />
 ));

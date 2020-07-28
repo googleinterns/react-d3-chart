@@ -1,11 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-import { BisectorTooltipEntry } from '../../types';
-
-const TooltipContainer = styled.rect`
-  fill: #e8e8e8;
-`;
-
+import { BisectorTooltipEntry } from '../../../types';
+import { TooltipContainer } from './styles';
 export interface Props {
   data: Array<BisectorTooltipEntry>;
   x: number;

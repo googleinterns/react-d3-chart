@@ -1,14 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import styled from 'styled-components';
+import { Text } from './styles';
 
-const Text = styled.text`
-  fill: black;
-  font-family: sans-serif;
-  font-size: 10px;
-`;
-
-interface Props {
+export interface AxisProps {
   scale: d3.ScaleLinear<number, number>;
   type: 'Top' | 'Right' | 'Bottom' | 'Left';
   x: number;
@@ -16,7 +10,7 @@ interface Props {
   label?: string;
 }
 
-const Axis: React.FC<Props> = ({ x, y, label, scale, type }) => {
+const Axis: React.FC<AxisProps> = ({ x, y, label, scale, type }) => {
   const gRef = useRef<SVGGElement>();
 
   const d3Render = () => {
@@ -36,10 +30,11 @@ const Axis: React.FC<Props> = ({ x, y, label, scale, type }) => {
     }
   };
 
+  d3Render();
+
   useEffect(() => {
     d3Render();
-  }, [x, y, label, scale, type]);
-
+  }, []);
   return (
     <g ref={gRef} transform={`translate(${x}, ${y})`}>
       <Text {...labelPos}>{label}</Text>
