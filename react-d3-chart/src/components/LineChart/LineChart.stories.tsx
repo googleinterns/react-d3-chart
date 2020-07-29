@@ -24,13 +24,26 @@ ranges.split(',').forEach((range) => {
   }
 });
 
-storiesOf('LineChart', module).add('Default', () => (
+storiesOf('LineChart', module).add('Overlapped', () => (
   <LineChart
     width={800}
     height={800}
     xDomain={[0, 900]}
-    yDomain={[-300, 300]}
+    yDomain={[-100, 100]}
     data={data}
+    viewMode={'overlapped'}
+    margin={{ top: 50, left: 50, right: 50, bottom: 200 }}
+  />
+));
+
+storiesOf('LineChart', module).add('Stacked', () => (
+  <LineChart
+    width={800}
+    height={800}
+    xDomain={[0, 900]}
+    yDomain={[-600, 600]}
+    data={data}
+    viewMode={'stacked'}
     margin={{ top: 50, left: 50, right: 50, bottom: 200 }}
   />
 ));
