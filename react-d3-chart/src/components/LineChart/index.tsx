@@ -1,10 +1,11 @@
-import React, { useMemo, useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import Axis from '../Axis';
 import { LineProps, Dimensions } from '../types';
-import Line from '../Line';
 import Overlay from '../Overlay';
 import Context from '../Context';
+import StackedLines from './StackedLines';
+import OverlappedLines from './OverlappedLines';
 
 const ContextHeight = 40;
 
@@ -25,6 +26,7 @@ interface SelfProps {
   data: Array<LineProps>;
   lineClassName?: string;
   contextHeight?: number;
+  viewMode?: 'stacked' | 'overlapped';
 }
 
 export type LineChartProps = SelfProps & Dimensions;
@@ -37,6 +39,7 @@ const LineChart: React.FC<LineChartProps> = ({
   data,
   margin,
   contextHeight = 40,
+  viewMode = 'overlapped',
 }) => {
   const svgRef = useRef<SVGSVGElement>();
   const [scales, setScales] = useState<ScalesState>({
@@ -56,20 +59,6 @@ const LineChart: React.FC<LineChartProps> = ({
     .scaleLinear()
     .domain(yDomain)
     .range([ContextHeight, 0]);
-
-  const lines = useMemo(
-    () =>
-      data.map((lineData, index) => (
-        <Line
-          key={`line${index}`}
-          colour={lineData.colour}
-          coordinates={lineData.coordinates}
-          xScale={xScale}
-          yScale={yScale}
-        />
-      )),
-    [data, xScale, yScale]
-  );
 
   useEffect(() => {
     if (svgRef.current) {
@@ -111,7 +100,12 @@ const LineChart: React.FC<LineChartProps> = ({
       ref={svgRef}
     >
       <g transform={`translate(${margin.left}, ${margin.top})`}>
-        {lines}
+        {viewMode === 'overlapped' && (
+          <OverlappedLines data={data} xScale={xScale} yScale={yScale} />
+        )}
+        {viewMode === 'stacked' && (
+          <StackedLines data={data} xScale={xScale} yScale={yScale} />
+        )}
         <Axis x={0} y={0} scale={yScale} type="Left" />
         <Axis x={0} y={height} scale={xScale} type="Bottom" />
         <Overlay
