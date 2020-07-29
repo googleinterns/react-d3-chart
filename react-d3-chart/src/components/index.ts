@@ -1,1 +1,2 @@
-export * from "./MyComponent";
+export * from './Axis';
+export * from './LineChart';

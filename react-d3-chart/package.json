@@ -21,7 +21,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "styled-components": "^5.1.1",
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -37,7 +38,8 @@
     "clean": "rimraf dist",
     "develop": "yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,6 +66,9 @@
     "@storybook/addons": "^6.0.0-rc.13",
     "@storybook/preset-create-react-app": "^3.1.4",
     "@storybook/react": "^6.0.0-rc.13",
+    "@storybook/storybook-deployer": "^2.8.6",
+    "@types/d3": "^5.7.2",
+    "@types/styled-components": "^5.1.1",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-plugin-typescript-to-proptypes": "^1.4.0",
     "concurrently": "^5.2.0",
