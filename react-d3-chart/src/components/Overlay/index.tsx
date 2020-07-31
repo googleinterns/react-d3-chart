@@ -1,23 +1,9 @@
-import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
 import * as d3 from 'd3';
 import { Dimensions, Coordinate, LineProps } from '../types';
-import BisectorTooltip, {
-  Props as BisectorTooltipProps,
-} from './BisectorTooltip';
-
-const ScannerRect = styled.rect`
-  fill: none;
-  pointer-events: all;
-  z-index: 2;
-`;
-
-const BisectorLine = styled.path`
-  stroke-width: 1;
-  stroke: #666;
-  pointer-events: none;
-  cursor: pointer;
-`;
+import { Props as BisectorTooltipProps } from './Bisector/BisectorTooltip';
+import Bisector from './Bisector';
+import { ScannerRect } from './styles';
 
 interface SelfProps {
   xScale: d3.ScaleLinear<number, number>;
@@ -29,9 +15,9 @@ interface State {
   tooltipProps: Pick<BisectorTooltipProps, 'data' | 'x' | 'marginLeft'>;
 }
 
-type Props = SelfProps & Dimensions;
+export type Props = SelfProps & Dimensions;
 
-const Bisector: React.FC<Props> = ({ height, width, xScale, linesData }) => {
+const Overlay: React.FC<Props> = ({ height, width, xScale, linesData }) => {
   const [isHovered, setIsHovered] = useState<State['isHovered']>(false);
   const [tooltipProps, setTooltipProps] = useState<State['tooltipProps']>({
     marginLeft: 0,
@@ -40,7 +26,6 @@ const Bisector: React.FC<Props> = ({ height, width, xScale, linesData }) => {
   });
   const onMouseOver = () => setIsHovered(true);
   const onMouseOut = () => setIsHovered(false);
-  const ref = useRef<SVGRectElement>();
 
   const onMouseMove = (e: React.MouseEvent<SVGRectElement, MouseEvent>) => {
     setIsHovered(true);
@@ -65,8 +50,6 @@ const Bisector: React.FC<Props> = ({ height, width, xScale, linesData }) => {
     });
   };
 
-  const { x, marginLeft, data } = tooltipProps;
-
   return (
     <>
       <ScannerRect
@@ -75,22 +58,10 @@ const Bisector: React.FC<Props> = ({ height, width, xScale, linesData }) => {
         onMouseEnter={onMouseOver}
         onMouseLeave={onMouseOut}
         onMouseMove={onMouseMove}
-        ref={ref}
       ></ScannerRect>
-      {isHovered && (
-        <>
-          <BisectorLine d={`M${marginLeft},${height} ${marginLeft},0`} />
-          <BisectorTooltip
-            data={data}
-            x={x}
-            marginLeft={marginLeft}
-            width={90}
-            height={140}
-          />
-        </>
-      )}
+      {isHovered && <Bisector tooltipProps={tooltipProps} height={height} />}
     </>
   );
 };
 
-export default Bisector;
+export default Overlay;

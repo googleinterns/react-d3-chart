@@ -39,7 +39,7 @@
     "develop": "yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "deploy-storybook": "storybook-to-ghpages"
+    "deploy-storybook": "storybook-to-ghpages --out=storybook-static"
   },
   "eslintConfig": {
     "extends": "react-app"
