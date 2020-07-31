@@ -20,7 +20,9 @@ interface SelfProps {
   graphDomain: [number, number];
   setBrush: (brushState: { brush: d3.BrushBehavior<unknown> }) => void;
   brushRef: React.MutableRefObject<SVGGElement>;
-  brush: SVGGElement;
+  brush: d3.BrushBehavior<unknown>;
+  zoom: d3.ZoomBehavior<Element, unknown>;
+  svgRef: React.MutableRefObject<SVGGElement>;
 }
 
 export type Props = SelfProps & Dimensions;
@@ -38,6 +40,8 @@ const Context: React.FC<Props> = ({
   graphDomain,
   setBrush,
   brushRef,
+  zoom,
+  svgRef,
 }) => {
   const contextMargin: Margin = {
     top: margin.top + graphHeight + 30,
@@ -68,6 +72,13 @@ const Context: React.FC<Props> = ({
         }
         const s = d3.event.selection || xScale.range();
         const newGraphDomain = s.map(xScale.invert, xScale);
+        if (svgRef.current && zoom) {
+          const zoomContainer = d3.select(svgRef.current);
+          const identity = d3.zoomIdentity
+            .scale(width / (s[1] - s[0]))
+            .translate(-s[0], 0);
+          zoom.transform(zoomContainer, identity);
+        }
         onBrush(newGraphDomain);
       };
 
@@ -78,11 +89,12 @@ const Context: React.FC<Props> = ({
       ]);
       brush.on('brush end', brushed);
       brushContainer.call(brush);
+      brushContainer.call(brush.move, xScaleContext.range());
       brushContainer.call(brush.move, xScale.range());
 
       setBrush({ brush });
     }
-  }, [brushRef]);
+  }, [brushRef, svgRef]);
 
   useEffect(() => {});
 
@@ -90,6 +102,7 @@ const Context: React.FC<Props> = ({
     <g
       transform={`translate(${contextMargin.left}, ${contextMargin.top})`}
       ref={brushRef}
+      width={width}
     >
       {lines}
       <Axis x={0} y={height} scale={xScaleContext} type="Bottom" />

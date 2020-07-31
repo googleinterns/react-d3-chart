@@ -36,6 +36,11 @@ const LineChart: React.FC<LineChartProps> = ({
   viewMode = 'overlapped',
 }) => {
   const brushRef = useRef<SVGGElement>();
+  const [zoomState, setZoomState] = useState<{
+    zoom: d3.ZoomBehavior<Element, unknown>;
+  }>({
+    zoom: null,
+  });
   const [state, setState] = useState<{ brush: d3.BrushBehavior<unknown> }>({
     brush: null,
   });
@@ -68,7 +73,8 @@ const LineChart: React.FC<LineChartProps> = ({
         const { brush } = state;
         if (brush && brushRef.current) {
           const brushContainer = d3.select(brushRef.current);
-          brush.move(brushContainer, t.rescaleX(xScaleContext).domain());
+          // @ts-ignore
+          brush.move(brushContainer, xScale.range().map(t.invertX, t));
         }
         setGraphDomain(t.rescaleX(xScaleContext).domain());
       };
@@ -87,6 +93,7 @@ const LineChart: React.FC<LineChartProps> = ({
         ])
         .on('zoom', zoomed);
       svg.call(zoom);
+      setZoomState({ zoom });
     }
   }, [svgRef, width, height, state, brushRef, xScaleContext]);
 
@@ -126,6 +133,8 @@ const LineChart: React.FC<LineChartProps> = ({
         setBrush={setState}
         brushRef={brushRef}
         brush={state.brush}
+        zoom={zoomState.zoom}
+        svgRef={svgRef}
       />
     </svg>
   );
