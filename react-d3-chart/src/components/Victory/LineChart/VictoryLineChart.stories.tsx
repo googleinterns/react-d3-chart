@@ -31,3 +31,15 @@ storiesOf('LineChart | Victory', module).add('Overlapped', () => (
     margin={{ top: 50, left: 50, right: 50, bottom: 50 }}
   />
 ));
+
+storiesOf('LineChart | Victory', module).add('Stacked', () => (
+  <LineChart
+    width={1000}
+    height={500}
+    xDomain={[0, 900]}
+    yDomain={[-100, 100]}
+    data={data}
+    viewMode={'stacked'}
+    margin={{ top: 50, left: 50, right: 50, bottom: 50 }}
+  />
+));

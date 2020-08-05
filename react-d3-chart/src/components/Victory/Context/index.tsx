@@ -20,6 +20,7 @@ interface SelfProps {
   tickCount?: number;
   data: LineProps[];
   maxPoints?: number;
+  startIndex: number;
 }
 
 export type ContextProps = SelfProps & Dimensions;
@@ -35,6 +36,7 @@ const Context: React.FC<ContextProps> = ({
   handleDomainChange,
   tickCount,
   data,
+  startIndex,
 }) => {
   const contextFilteredData = useMemo(() => downSample(data, maxPoints), [
     data,
@@ -51,7 +53,7 @@ const Context: React.FC<ContextProps> = ({
             key={`line${index + 1}`}
             data={lineData}
             style={{
-              data: { stroke: color(index.toString()) },
+              data: { stroke: color(startIndex + index.toString()) },
             }}
           />
         );

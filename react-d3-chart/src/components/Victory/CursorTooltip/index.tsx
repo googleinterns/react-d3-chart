@@ -17,24 +17,31 @@ export interface CursorTooltipProps {
   color?: d3.ScaleOrdinal<string, string>;
   tooltipXOffset?: number;
   tooltipYOffset?: number;
+  startIndex: number;
 }
 
+// TODO(https://github.com/FormidableLabs/victory/issues/1451)
 // Custom scaled X calculation till this issue with
 // zoom and cursor onCursorChange is solved
-// https://github.com/FormidableLabs/victory/issues/1451
 const scaleX = (
   x: CursorTooltipProps['x'],
   selectedXDomain: CursorTooltipProps['selectedXDomain'],
   width: CursorTooltipProps['width'],
   graphPadding: CursorTooltipProps['graphPadding']
 ) => {
+  // x is the cursor pixel offset from the left hand side of the containing svg
   if (x === null) return -1;
   const start = selectedXDomain[0];
   const end = selectedXDomain[1];
+  // adjustedWidth removes the inner padding from the width of the containing svg
   const adjustedWith = width - graphPadding.left - graphPadding.right;
+  // adjustedX removes the left hand side padding from the cursor position
   const adjustedX = x - graphPadding.left - 5;
+  // calculates the cursor positon as a percentage of the svg width
   const percentage = adjustedX / adjustedWith;
   const range = end - start;
+  // Finally calculates the respective closest domain x position based on the
+  // percentage of the svg the cursor is positioned at
   return Math.round(percentage * range + start);
 };
 
@@ -50,8 +57,11 @@ const CursorTooltip: React.FC<CursorTooltipProps> = ({
   selectedXDomain,
   graphPadding,
   color = DEFAULT_COLOR,
+  startIndex,
 }) => {
   const cursorX = Math.round(x);
+  // Flips the position of the tooltip from right to left if the cursor is
+  // approaching the right handside border of the svg
   const adjustedXOffset =
     cursorX + tooltipXOffset + width <
     graphWidth - graphPadding.left - graphPadding.right
@@ -67,8 +77,13 @@ const CursorTooltip: React.FC<CursorTooltipProps> = ({
   });
 
   const tooltipEntries = yValues.map((y, index) => (
-    <tspan x={5} dy="14px" fill={color(index.toString())} key={`entry${index}`}>
-      {`Trace ${index + 1}: ${y}`}
+    <tspan
+      x={5}
+      dy="14px"
+      fill={color(startIndex + index.toString())}
+      key={`entry${index}`}
+    >
+      {`Trace ${startIndex + index + 1}: ${y}`}
     </tspan>
   ));
 
