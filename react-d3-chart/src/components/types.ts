@@ -19,6 +19,6 @@ export interface Margin {
 }
 
 export interface BisectorTooltipEntry {
-  colour: string;
+  color: string;
   y: number;
 }

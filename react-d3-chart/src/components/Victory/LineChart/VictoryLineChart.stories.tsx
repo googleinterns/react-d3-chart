@@ -24,7 +24,7 @@ storiesOf('LineChart | Victory', module).add('Overlapped', () => (
   <LineChart
     width={1000}
     height={500}
-    xDomain={[0, 1000]}
+    xDomain={[0, 900]}
     yDomain={[-100, 100]}
     data={data}
     viewMode={'overlapped'}

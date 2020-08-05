@@ -6,7 +6,8 @@ import { DomainPropObjectType } from 'victory-core';
 import { VictoryAxis } from 'victory-axis';
 import { VictoryLine } from 'victory-line';
 import { Dimensions, Coordinate, LineProps } from '../../types';
-import { DEFAULT_COLOUR } from '../../theme';
+import { DEFAULT_COLOR } from '../../../theme';
+import { downSample } from '../../../utils';
 
 const CONTEXT_HEIGHT = 90;
 const CONTEXT_INNER_PADDING_BOTTOM = 30;
@@ -15,7 +16,7 @@ interface SelfProps {
   entireDomain: DomainPropObjectType;
   selectedDomain: DomainPropObjectType;
   handleDomainChange: (selectedDomain: DomainPropObjectType) => void;
-  colour?: d3.ScaleOrdinal<string, string>;
+  color?: d3.ScaleOrdinal<string, string>;
   tickCount?: number;
   data: LineProps[];
   maxPoints?: number;
@@ -23,21 +24,11 @@ interface SelfProps {
 
 export type ContextProps = SelfProps & Dimensions;
 
-const contextFilterData = (data: LineProps[], maxPoints: number) => {
-  if (data.length > 0) {
-    return data.map((line) => {
-      const k = Math.ceil(line.length / maxPoints);
-      return line.filter((_, i) => i % k === 0);
-    });
-  }
-  return [];
-};
-
 const Context: React.FC<ContextProps> = ({
   width,
   entireDomain,
   margin,
-  colour = DEFAULT_COLOUR,
+  color = DEFAULT_COLOR,
   height = CONTEXT_HEIGHT,
   maxPoints = 150,
   selectedDomain,
@@ -45,10 +36,10 @@ const Context: React.FC<ContextProps> = ({
   tickCount,
   data,
 }) => {
-  const contextFilteredData = useMemo(
-    () => contextFilterData(data, maxPoints),
-    [data, maxPoints]
-  );
+  const contextFilteredData = useMemo(() => downSample(data, maxPoints), [
+    data,
+    maxPoints,
+  ]);
 
   const contextLines = useMemo(
     () =>
@@ -60,12 +51,12 @@ const Context: React.FC<ContextProps> = ({
             key={`line${index + 1}`}
             data={lineData}
             style={{
-              data: { stroke: colour(index.toString()) },
+              data: { stroke: color(index.toString()) },
             }}
           />
         );
       }),
-    [contextFilteredData, colour]
+    [contextFilteredData, color]
   );
 
   return (

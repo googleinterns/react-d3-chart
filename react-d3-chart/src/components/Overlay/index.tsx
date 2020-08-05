@@ -35,10 +35,10 @@ const Overlay: React.FC<Props> = ({ height, width, xScale, linesData }) => {
     const bisect = d3.bisector((coord: Coordinate) => coord.x).left;
     let data: BisectorTooltipProps['data'] = [];
     linesData.forEach((line) => {
-      const { coordinates, colour } = line;
+      const { coordinates, color } = line;
       const idx = bisect(coordinates, timeX);
       data.push({
-        colour,
+        color,
         y: coordinates[idx].y,
       });
     });
