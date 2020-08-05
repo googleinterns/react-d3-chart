@@ -1,7 +1,4 @@
-export interface LineProps {
-  colour: string;
-  coordinates: Array<Coordinate>;
-}
+export type LineProps = Array<Coordinate>;
 
 export interface Dimensions {
   width: number;

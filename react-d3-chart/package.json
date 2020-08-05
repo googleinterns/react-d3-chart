@@ -22,7 +22,8 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "styled-components": "^5.1.1",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "victory": "^35.0.8"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -69,6 +70,7 @@
     "@storybook/storybook-deployer": "^2.8.6",
     "@types/d3": "^5.7.2",
     "@types/styled-components": "^5.1.1",
+    "@types/victory": "^33.1.4",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-plugin-typescript-to-proptypes": "^1.4.0",
     "concurrently": "^5.2.0",
