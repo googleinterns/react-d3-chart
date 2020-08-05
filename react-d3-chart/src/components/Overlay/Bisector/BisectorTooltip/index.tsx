@@ -17,7 +17,7 @@ const BisectorTooltip: React.FC<Props> = ({
   marginLeft,
 }) => {
   const tooltipEntries = data.map((entry, index) => (
-    <tspan x={5} dy="14px" fill={entry.colour} key={`entry${index}`}>
+    <tspan x={5} dy="14px" fill={entry.color} key={`entry${index}`}>
       {`Trace ${index + 1}: ${entry.y}`}
     </tspan>
   ));
