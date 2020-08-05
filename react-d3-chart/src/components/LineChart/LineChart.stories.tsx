@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import LineChart from '.';
-import { graphData } from './rawData';
+import { graphData } from '../../utils/rawData';
 import { LineProps } from '../types';
 
 const ranges = '1-5, 7-9';
