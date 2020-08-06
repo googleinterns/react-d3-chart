@@ -18,7 +18,7 @@ const OverlappedLines: React.FC<OverlappedLinesProps> = ({
       data.map((lineData, index) => (
         <Line
           key={`line${index}`}
-          colour={lineData.colour}
+          color={lineData.color}
           coordinates={lineData.coordinates}
           xScale={xScale}
           yScale={yScale}

@@ -45,7 +45,7 @@ const Context: React.FC<Props> = ({
       linesData.map((lineData, index) => (
         <Line
           key={`line${index}`}
-          colour={lineData.colour}
+          color={lineData.color}
           coordinates={lineData.coordinates}
           xScale={xScaleContext}
           yScale={yScaleContext}

@@ -10,7 +10,7 @@ interface SelfProps {
 
 export type Props = LineProps & SelfProps;
 
-const Line: React.FC<Props> = ({ colour, coordinates, xScale, yScale }) => {
+const Line: React.FC<Props> = ({ color, coordinates, xScale, yScale }) => {
   const line = d3
     .line<Coordinate>()
     .defined(
@@ -23,7 +23,7 @@ const Line: React.FC<Props> = ({ colour, coordinates, xScale, yScale }) => {
     .x((d) => xScale(d.x))
     .y((d) => yScale(d.y));
 
-  return <LineContainer stroke={colour} d={line(coordinates)} />;
+  return <LineContainer stroke={color} d={line(coordinates)} />;
 };
 
 export default Line;

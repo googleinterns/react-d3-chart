@@ -8,22 +8,18 @@ import { VictoryLine } from 'victory-line';
 import { createContainer } from 'victory';
 import { VictoryAxis } from 'victory-axis';
 import Context from '../Context';
-import { LineProps, Dimensions, Coordinate } from '../../types';
-import { DEFAULT_COLOUR } from '../../theme';
-
-const DEFAULT_MARGIN = {
-  top: 30,
-  left: 30,
-  right: 30,
-  bottom: 30,
-};
-
-const GRAPH_INNER_PADDING_BOTTOM = 40;
-const GRAPH_INNER_PADDING_TOP = 30;
+import CursorTooltip from '../CursorTooltip';
+import { LineProps, Dimensions } from '../../types';
+import {
+  DEFAULT_COLOR,
+  DEFAULT_GRAPH_MARGIN,
+  DEFAULT_GRAPH_PADDING,
+} from '../../../theme';
+import { downSample } from '../../../utils';
 
 const ZoomCursorContainer = createContainer<
-  VictoryZoomContainerProps,
-  VictoryCursorContainerProps
+  VictoryCursorContainerProps,
+  VictoryZoomContainerProps
 >('zoom', 'cursor');
 
 interface SelfProps {
@@ -34,8 +30,10 @@ interface SelfProps {
   contextHeight?: number;
   viewMode?: 'stacked' | 'overlapped';
   maxPoints?: number;
-  colour?: d3.ScaleOrdinal<string, string>;
+  color?: d3.ScaleOrdinal<string, string>;
   tickCount?: number;
+  tooltipWidth?: number;
+  tooltipHeight?: number;
 }
 
 export type LineChartProps = SelfProps & Dimensions;
@@ -43,7 +41,6 @@ export type LineChartProps = SelfProps & Dimensions;
 interface State {
   selectedDomain: DomainPropObjectType;
 }
-
 const filterDomain = (
   data: SelfProps['data'],
   selectedDomain: State['selectedDomain']
@@ -54,28 +51,20 @@ const filterDomain = (
     );
   });
 
-const downSample = (filtered: Coordinate[][], maxPoints: number) => {
-  if (filtered.length > 0 && filtered[0].length > maxPoints) {
-    const k = Math.ceil(filtered[0].length / maxPoints);
-    return filtered.map((line) => {
-      return line.filter((_, i) => i % k === 0);
-    });
-  }
-  return filtered;
-};
-
 const LineChart: React.FC<LineChartProps> = ({
   width,
   height,
   xDomain,
   yDomain,
   data,
-  margin = DEFAULT_MARGIN,
+  margin = DEFAULT_GRAPH_MARGIN,
   contextHeight,
   viewMode = 'overlapped',
   maxPoints = 150,
-  colour = DEFAULT_COLOUR,
+  color = DEFAULT_COLOR,
   tickCount = 10,
+  tooltipWidth,
+  tooltipHeight,
 }) => {
   const domain = {
     x: xDomain,
@@ -103,12 +92,12 @@ const LineChart: React.FC<LineChartProps> = ({
             key={`line${index + 1}`}
             data={lineData}
             style={{
-              data: { stroke: colour(index.toString()) },
+              data: { stroke: color(index.toString()) },
             }}
           />
         );
       }),
-    [filteredData, colour]
+    [filteredData, color]
   );
 
   return (
@@ -122,12 +111,7 @@ const LineChart: React.FC<LineChartProps> = ({
         height={height}
         scale={{ x: 'linear', y: 'linear' }}
         domain={domain}
-        padding={{
-          left: margin.left,
-          right: margin.right,
-          bottom: GRAPH_INNER_PADDING_BOTTOM,
-          top: GRAPH_INNER_PADDING_TOP,
-        }}
+        padding={DEFAULT_GRAPH_PADDING}
         containerComponent={
           <ZoomCursorContainer
             responsive={false}
@@ -135,6 +119,18 @@ const LineChart: React.FC<LineChartProps> = ({
             zoomDomain={selectedDomain}
             cursorDimension="x"
             onZoomDomainChange={handleDomainChange}
+            cursorLabel={(point) => point.x}
+            cursorLabelComponent={
+              <CursorTooltip
+                data={data}
+                graphWidth={width}
+                xDomain={xDomain}
+                selectedXDomain={selectedDomain.x as [number, number]}
+                graphPadding={DEFAULT_GRAPH_PADDING}
+                width={tooltipWidth}
+                height={tooltipHeight}
+              />
+            }
           />
         }
       >
@@ -143,7 +139,7 @@ const LineChart: React.FC<LineChartProps> = ({
           orientation="bottom"
           tickCount={tickCount}
           domain={domain}
-          offsetY={GRAPH_INNER_PADDING_BOTTOM}
+          offsetY={DEFAULT_GRAPH_PADDING.bottom}
         />
         <VictoryAxis
           crossAxis={false}
@@ -161,7 +157,7 @@ const LineChart: React.FC<LineChartProps> = ({
         selectedDomain={selectedDomain}
         handleDomainChange={handleDomainChange}
         data={data}
-        margin={margin}
+        margin={DEFAULT_GRAPH_PADDING}
         tickCount={tickCount}
       />
     </div>
