@@ -17,6 +17,7 @@ export interface CursorTooltipProps {
   color?: d3.ScaleOrdinal<string, string>;
   tooltipXOffset?: number;
   tooltipYOffset?: number;
+  startIndex: number;
 }
 
 // TODO(https://github.com/FormidableLabs/victory/issues/1451)
@@ -56,6 +57,7 @@ const CursorTooltip: React.FC<CursorTooltipProps> = ({
   selectedXDomain,
   graphPadding,
   color = DEFAULT_COLOR,
+  startIndex,
 }) => {
   const cursorX = Math.round(x);
   // Flips the position of the tooltip from right to left if the cursor is
@@ -75,8 +77,13 @@ const CursorTooltip: React.FC<CursorTooltipProps> = ({
   });
 
   const tooltipEntries = yValues.map((y, index) => (
-    <tspan x={5} dy="14px" fill={color(index.toString())} key={`entry${index}`}>
-      {`Trace ${index + 1}: ${y}`}
+    <tspan
+      x={5}
+      dy="14px"
+      fill={color(startIndex + index.toString())}
+      key={`entry${index}`}
+    >
+      {`Trace ${startIndex + index + 1}: ${y}`}
     </tspan>
   ));
 
