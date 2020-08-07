@@ -1,27 +1,45 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import * as d3 from 'd3';
-import Axis from '../Axis';
-import { LineProps, Dimensions } from '../types';
-import Overlay from '../Overlay';
-import Context from '../Context';
-import OverlappedLines from './OverlappedLines';
+import {
+  Dimensions,
+  TooltipState,
+  DomainState,
+  CommonProps,
+  Domains,
+} from '../types';
+import { DEFAULT_COLOR } from '../../theme';
+import { downSample } from '../../utils';
+import BaseChart from './BaseChart';
+import { LineChartContainer } from './styles';
 
-const ContextHeight = 40;
+const CONTEXT_HEIGHT = 40;
 
 export interface State {
-  graphDomain: [number, number];
+  tooltipState: TooltipState;
+  domainState: DomainState;
 }
 
 interface SelfProps {
-  xDomain: [number, number];
-  yDomain: [number, number];
-  data: Array<LineProps>;
   lineClassName?: string;
   contextHeight?: number;
   viewMode?: 'stacked' | 'overlapped';
 }
 
-export type LineChartProps = SelfProps & Dimensions;
+export type LineChartProps = SelfProps &
+  Dimensions &
+  Domains &
+  Partial<Pick<CommonProps, 'color' | 'maxPoints'>> &
+  Pick<CommonProps, 'data'>;
+
+const filterDomain = (
+  data: CommonProps['data'],
+  selectedDomain: DomainState['selectedDomain']
+) =>
+  data.map((line) => {
+    return line.filter(
+      (d) => d.x >= selectedDomain[0] && d.x <= selectedDomain[1]
+    );
+  });
 
 const LineChart: React.FC<LineChartProps> = ({
   width,
@@ -30,20 +48,24 @@ const LineChart: React.FC<LineChartProps> = ({
   yDomain,
   data,
   margin,
-  contextHeight = ContextHeight,
+  contextHeight = CONTEXT_HEIGHT,
   viewMode = 'overlapped',
+  color = DEFAULT_COLOR,
+  maxPoints = 150,
 }) => {
-  const brushRef = useRef<SVGGElement>();
-  const svgRef = useRef<SVGGElement>();
-  const [brushState, setbrushState] = useState<{
-    brush: d3.BrushBehavior<unknown>;
-  }>({
-    brush: null,
+  const [tooltipState, setTooltipState] = useState<TooltipState>({
+    enabled: false,
+    xOffset: 0,
+    xScaled: 0,
   });
-  const [graphDomain, setGraphDomain] = useState<State['graphDomain']>(xDomain);
+  const [domainState, setDomainState] = useState<DomainState>({
+    selectedDomain: xDomain,
+    eventSource: '',
+  });
+  const { selectedDomain } = domainState;
   const xScale = useMemo(
-    () => d3.scaleLinear().domain(graphDomain).range([0, width]),
-    [width, graphDomain]
+    () => d3.scaleLinear().domain(selectedDomain).range([0, width]),
+    [width, selectedDomain]
   );
   const xScaleContext = useMemo(
     () => d3.scaleLinear().range([0, width]).domain(xDomain),
@@ -58,73 +80,53 @@ const LineChart: React.FC<LineChartProps> = ({
     [contextHeight, yDomain]
   );
 
-  useEffect(() => {
-    if (svgRef.current) {
-      const zoomed = () => {
-        if (d3.event.sourceEvent && d3.event.sourceEvent.type === 'brush') {
-          return;
-        }
-        const t = d3.event.transform;
-        const { brush } = brushState;
-        if (brush && brushRef.current) {
-          const brushContainer = d3.select(brushRef.current);
-          // @ts-ignore
-          brush.move(brushContainer, xScale.range().map(t.invertX, t));
-        }
-        setGraphDomain(t.rescaleX(xScaleContext).domain());
-      };
-
-      const svg = d3.select(svgRef.current);
-      const zoom = d3
-        .zoom()
-        .scaleExtent([1, Infinity])
-        .translateExtent([
-          [0, 0],
-          [width, height],
-        ])
-        .extent([
-          [0, 0],
-          [width, height],
-        ])
-        .on('zoom', zoomed);
-      svg.call(zoom);
-    }
-  }, [svgRef, width, height, brushState, brushRef, xScaleContext]);
+  const domainFilteredData = filterDomain(data, selectedDomain);
+  const filteredData = downSample(domainFilteredData, maxPoints);
 
   return (
-    <svg
-      width={width + margin.left + margin.right}
-      height={height + margin.top + margin.bottom}
-    >
-      <g transform={`translate(${margin.left}, ${margin.top})`} ref={svgRef}>
-        {viewMode === 'overlapped' && (
-          <OverlappedLines data={data} xScale={xScale} yScale={yScale} />
-        )}
-        <Axis x={0} y={0} scale={yScale} type="Left" />
-        <Axis x={0} y={height} scale={xScale} type="Bottom" />
-        <Overlay
+    <LineChartContainer>
+      {viewMode === 'overlapped' && (
+        <BaseChart
           width={width}
           height={height}
+          data={data}
+          filteredData={filteredData}
           margin={margin}
+          contextHeight={contextHeight}
+          color={color}
           xScale={xScale}
-          linesData={data}
+          yScale={yScale}
+          xScaleContext={xScaleContext}
+          yScaleContext={yScaleContext}
+          tooltipState={tooltipState}
+          setTooltipState={setTooltipState}
+          domainState={domainState}
+          setDomainState={setDomainState}
         />
-      </g>
-      <Context
-        margin={margin}
-        width={width}
-        graphHeight={height}
-        height={contextHeight}
-        xScale={xScale}
-        xScaleContext={xScaleContext}
-        yScaleContext={yScaleContext}
-        linesData={data}
-        onBrush={setGraphDomain}
-        graphDomain={graphDomain}
-        setBrush={setbrushState}
-        brushRef={brushRef}
-      />
-    </svg>
+      )}
+      {viewMode === 'stacked' &&
+        filteredData.map((line, index) => (
+          <BaseChart
+            width={width}
+            height={height}
+            data={[data[index]]}
+            filteredData={[line]}
+            margin={margin}
+            contextHeight={contextHeight}
+            color={color}
+            xScale={xScale}
+            yScale={yScale}
+            xScaleContext={xScaleContext}
+            yScaleContext={yScaleContext}
+            graphIndex={index}
+            tooltipState={tooltipState}
+            setTooltipState={setTooltipState}
+            domainState={domainState}
+            setDomainState={setDomainState}
+            key={`linechart-${index}`}
+          />
+        ))}
+    </LineChartContainer>
   );
 };
 

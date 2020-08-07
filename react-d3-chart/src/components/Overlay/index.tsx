@@ -1,53 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as d3 from 'd3';
-import { Dimensions, Coordinate, LineProps } from '../types';
-import { Props as BisectorTooltipProps } from './Bisector/BisectorTooltip';
+import { Dimensions, TooltipState, Scales, CommonProps } from '../types';
 import Bisector from './Bisector';
 import { ScannerRect } from './styles';
+import { DEFAULT_COLOR } from '../../theme';
 
 interface SelfProps {
-  xScale: d3.ScaleLinear<number, number>;
-  linesData: Array<LineProps>;
+  tooltipState: TooltipState;
+  setTooltipState: (tooltipState: TooltipState) => void;
 }
 
-interface State {
-  isHovered: boolean;
-  tooltipProps: Pick<BisectorTooltipProps, 'data' | 'x' | 'marginLeft'>;
-}
+export type Props = SelfProps &
+  Dimensions &
+  Pick<Scales, 'xScale'> &
+  Partial<Pick<CommonProps, 'color' | 'graphIndex'>> &
+  Pick<CommonProps, 'data'>;
 
-export type Props = SelfProps & Dimensions;
-
-const Overlay: React.FC<Props> = ({ height, width, xScale, linesData }) => {
-  const [isHovered, setIsHovered] = useState<State['isHovered']>(false);
-  const [tooltipProps, setTooltipProps] = useState<State['tooltipProps']>({
-    marginLeft: 0,
-    x: 0,
-    data: [],
-  });
-  const onMouseOver = () => setIsHovered(true);
-  const onMouseOut = () => setIsHovered(false);
+const Overlay: React.FC<Props> = ({
+  height,
+  width,
+  xScale,
+  data,
+  color = DEFAULT_COLOR,
+  graphIndex,
+  tooltipState,
+  setTooltipState,
+}) => {
+  const onMouseOver = () =>
+    setTooltipState({ enabled: true, xOffset: 0, xScaled: 0 });
+  const onMouseOut = () =>
+    setTooltipState({ enabled: false, xOffset: 0, xScaled: 0 });
 
   const onMouseMove = (e: React.MouseEvent<SVGRectElement, MouseEvent>) => {
-    setIsHovered(true);
     const mouse = d3.clientPoint(e.target as d3.ContainerElement, e);
     const mouseX = Math.round(mouse[0]);
     const timeX = Math.round(xScale.invert(mouse[0]));
-    const bisect = d3.bisector((coord: Coordinate) => coord.x).left;
-    let data: BisectorTooltipProps['data'] = [];
-    linesData.forEach((line) => {
-      const { coordinates, color } = line;
-      const idx = bisect(coordinates, timeX);
-      data.push({
-        color,
-        y: coordinates[idx].y,
-      });
-    });
-
-    setTooltipProps({
-      x: timeX,
-      marginLeft: mouseX,
-      data,
-    });
+    setTooltipState({ enabled: true, xOffset: mouseX, xScaled: timeX });
   };
 
   return (
@@ -59,7 +47,16 @@ const Overlay: React.FC<Props> = ({ height, width, xScale, linesData }) => {
         onMouseLeave={onMouseOut}
         onMouseMove={onMouseMove}
       ></ScannerRect>
-      {isHovered && <Bisector tooltipProps={tooltipProps} height={height} />}
+      {tooltipState.enabled && (
+        <Bisector
+          color={color}
+          tooltipState={tooltipState}
+          height={height}
+          data={data}
+          graphIndex={graphIndex}
+          graphWidth={width}
+        />
+      )}
     </>
   );
 };
