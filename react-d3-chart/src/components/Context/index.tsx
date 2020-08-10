@@ -1,70 +1,80 @@
-import React, { useMemo, useRef, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import styled from 'styled-components';
-import { Dimensions, Margin, LineProps } from '../types';
+import { Dimensions, Margin, DomainState, Scales, CommonProps } from '../types';
 import Axis from '../Axis';
 import Line from '../Line';
-import usePrevious from '../../utils/usePrevious';
+import { DEFAULT_COLOR } from '../../theme';
 
 interface SelfProps {
   graphHeight: number;
-  linesData: Array<LineProps>;
-  xScaleContext: d3.ScaleLinear<number, number>;
-  yScaleContext: d3.ScaleLinear<number, number>;
-  xScale: d3.ScaleLinear<number, number>;
-  onBrush: (domain: [number, number]) => void;
-  graphDomain: [number, number];
-  setBrush: (brushState: { brush: d3.BrushBehavior<unknown> }) => void;
-  brushRef: React.MutableRefObject<SVGGElement>;
+  onBrush: (domainState: DomainState) => void;
+  domainState: DomainState;
 }
 
-export type Props = SelfProps & Dimensions;
+interface State {
+  brushRef: SVGGElement;
+  brushState: { brush: d3.BrushBehavior<unknown> };
+}
 
-const Context: React.FC<Props> = ({
+export type ContextProps = SelfProps &
+  Dimensions &
+  Pick<Scales, 'xScaleContext' | 'yScaleContext' | 'xScale'> &
+  Partial<Pick<CommonProps, 'color' | 'graphIndex'>> &
+  Pick<CommonProps, 'data'>;
+
+const Context: React.FC<ContextProps> = ({
   margin,
   height,
   graphHeight,
   width,
-  linesData,
+  data,
   xScaleContext,
   yScaleContext,
   xScale,
   onBrush,
-  setBrush,
-  brushRef,
+  color = DEFAULT_COLOR,
+  graphIndex = 0,
+  domainState,
 }) => {
+  const brushRef = useRef<State['brushRef']>();
+  const [brushState, setBrushState] = useState<State['brushState']>({
+    brush: null,
+  });
+  const { brush } = brushState;
+  const brushEventID = `brush${graphIndex}`;
   const contextMargin: Margin = {
     top: margin.top + graphHeight + 30,
     right: margin.right,
     bottom: margin.bottom,
     left: margin.left,
   };
+  const { selectedDomain, eventSource } = domainState;
 
   const lines = useMemo(
     () =>
-      linesData.map((lineData, index) => (
+      data.map((lineData, index) => (
         <Line
           key={`line${index}`}
-          color={lineData.color}
-          coordinates={lineData.coordinates}
+          color={color((index + graphIndex).toString())}
+          coordinates={lineData}
           xScale={xScaleContext}
           yScale={yScaleContext}
         />
       )),
-    [linesData, xScaleContext, yScaleContext]
+    [data, xScaleContext, yScaleContext]
   );
+
+  const brushed = () => {
+    if (!d3.event.sourceEvent || d3.event.sourceEvent.type === 'zoom') {
+      return;
+    }
+    const s = d3.event.selection || xScale.range();
+    const newGraphDomain = s.map(xScale.invert, xScale);
+    onBrush({ selectedDomain: newGraphDomain, eventSource: brushEventID });
+  };
 
   useEffect(() => {
     if (brushRef.current) {
-      const brushed = () => {
-        if (d3.event.sourceEvent && d3.event.sourceEvent.type === 'zoom') {
-          return;
-        }
-        const s = d3.event.selection || xScale.range();
-        const newGraphDomain = s.map(xScale.invert, xScale);
-        onBrush(newGraphDomain);
-      };
-
       const brushContainer = d3.select(brushRef.current);
       const brush = d3.brushX().extent([
         [0, 0],
@@ -74,15 +84,26 @@ const Context: React.FC<Props> = ({
       brushContainer.call(brush);
       brushContainer.call(brush.move, xScaleContext.range());
       brushContainer.call(brush.move, xScale.range());
-      setBrush({ brush });
+      setBrushState({ brush });
     }
-  }, [brushRef]);
+  }, [brushRef, brushEventID]);
+
+  useEffect(() => {
+    if (brushRef.current && brush && eventSource != brushEventID) {
+      const brushContainer = d3.select(brushRef.current);
+      brushContainer.call(brush.move, [
+        xScaleContext(selectedDomain[0]),
+        xScaleContext(selectedDomain[1]),
+      ]);
+    }
+  }, [selectedDomain, brushRef.current, eventSource, brush]);
 
   return (
     <g
       transform={`translate(${contextMargin.left}, ${contextMargin.top})`}
       ref={brushRef}
       width={width}
+      id={brushEventID}
     >
       {lines}
       <Axis x={0} y={height} scale={xScaleContext} type="Bottom" />

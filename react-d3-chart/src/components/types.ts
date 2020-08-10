@@ -18,7 +18,33 @@ export interface Margin {
   left: number;
 }
 
-export interface BisectorTooltipEntry {
-  color: string;
-  y: number;
+export interface TooltipState {
+  xOffset: number;
+  xScaled: number;
+  enabled: boolean;
+}
+
+export interface DomainState {
+  selectedDomain: [number, number];
+  eventSource: string;
+}
+
+export interface Scales {
+  xScale: d3.ScaleLinear<number, number>;
+  yScale: d3.ScaleLinear<number, number>;
+  xScaleContext: d3.ScaleLinear<number, number>;
+  yScaleContext: d3.ScaleLinear<number, number>;
+}
+
+export interface CommonProps {
+  color: d3.ScaleOrdinal<string, string>;
+  graphIndex: number;
+  graphWidth: number;
+  maxPoints: number;
+  data: Array<LineProps>;
+}
+
+export interface Domains {
+  xDomain: [number, number];
+  yDomain: [number, number];
 }

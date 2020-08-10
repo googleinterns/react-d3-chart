@@ -1,32 +1,43 @@
 import React from 'react';
-import BisectorTooltip, {
-  Props as BisectorTooltipProps,
-} from './BisectorTooltip';
+import BisectorTooltip from './BisectorTooltip';
 import { BisectorLine } from './styles';
+import { TooltipState, CommonProps, Dimensions } from '../../types';
+import { DEFAULT_COLOR } from '../../../theme';
 
-interface Props {
-  height: number;
+interface SelfProps {
   tooltipHeight?: number;
   tooltipWidth?: number;
-  tooltipProps: Pick<BisectorTooltipProps, 'data' | 'x' | 'marginLeft'>;
+  tooltipState: TooltipState;
 }
 
+type Props = SelfProps &
+  Pick<Dimensions, 'height'> &
+  Partial<Pick<CommonProps, 'color' | 'graphIndex' | 'graphWidth'>> &
+  Pick<CommonProps, 'data'>;
+
 const Bisector: React.FC<Props> = ({
-  tooltipProps,
+  tooltipState,
+  data,
   height,
   tooltipHeight = 140,
   tooltipWidth = 90,
+  graphIndex,
+  graphWidth,
+  color = DEFAULT_COLOR,
 }) => {
-  const { x, marginLeft, data } = tooltipProps;
+  const { xOffset, xScaled } = tooltipState;
   return (
     <>
-      <BisectorLine d={`M${marginLeft},${height} ${marginLeft},0`} />
+      <BisectorLine d={`M${xOffset},${height} ${xOffset},0`} />
       <BisectorTooltip
         data={data}
-        x={x}
-        marginLeft={marginLeft}
+        x={xScaled}
+        xOffset={xOffset}
         width={tooltipWidth}
         height={tooltipHeight}
+        graphIndex={graphIndex}
+        graphWidth={graphWidth}
+        color={color}
       />
     </>
   );

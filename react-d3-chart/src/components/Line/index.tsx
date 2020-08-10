@@ -1,14 +1,14 @@
 import React from 'react';
 import * as d3 from 'd3';
-import { LineProps, Coordinate } from '../types';
+import { LineProps, Coordinate, Scales } from '../types';
 import { LineContainer } from './styles';
 
 interface SelfProps {
-  xScale: d3.ScaleLinear<number, number>;
-  yScale: d3.ScaleLinear<number, number>;
+  coordinates: LineProps;
+  color: string;
 }
 
-export type Props = LineProps & SelfProps;
+export type Props = SelfProps & Pick<Scales, 'xScale' | 'yScale'>;
 
 const Line: React.FC<Props> = ({ color, coordinates, xScale, yScale }) => {
   const line = d3
