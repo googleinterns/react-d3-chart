@@ -1,21 +1,27 @@
-import React, { useMemo } from 'react';
-import * as d3 from 'd3';
-import { VictoryZoomContainerProps } from 'victory-zoom-container';
-import { VictoryCursorContainerProps } from 'victory-cursor-container';
-import { VictoryChart } from 'victory-chart';
-import { DomainPropObjectType } from 'victory-core';
-import { VictoryLine } from 'victory-line';
-import { createContainer } from 'victory';
-import { VictoryAxis } from 'victory-axis';
-import Context from '../../Context';
-import CursorTooltip from '../../CursorTooltip';
-import { LineProps, Dimensions } from '../../../types';
-import { DEFAULT_COLOR, DEFAULT_GRAPH_PADDING } from '../../../../theme';
+import React, { useMemo } from "react";
+import * as d3 from "d3";
+import { VictoryZoomContainerProps } from "victory-zoom-container";
+import { VictoryCursorContainerProps } from "victory-cursor-container";
+import { VictoryChart } from "victory-chart";
+import { DomainPropObjectType } from "victory-core";
+import { VictoryLine } from "victory-line";
+import { createContainer } from "victory";
+import { VictoryAxis } from "victory-axis";
+import Context from "../../Context";
+import CursorTooltip from "../../CursorTooltip";
+import {
+  LineProps,
+  Dimensions,
+} from "../../../react-d3-chart/src/components/types";
+import {
+  DEFAULT_COLOR,
+  DEFAULT_GRAPH_PADDING,
+} from "../../../react-d3-chart/src/theme";
 
 const ZoomCursorContainer = createContainer<
   VictoryCursorContainerProps,
   VictoryZoomContainerProps
->('zoom', 'cursor');
+>("zoom", "cursor");
 
 interface SelfProps {
   xDomain: [number, number];
@@ -34,7 +40,7 @@ interface SelfProps {
 }
 
 export type BaseLineChartProps = SelfProps &
-  Pick<Dimensions, 'width' | 'height'>;
+  Pick<Dimensions, "width" | "height">;
 
 const BaseChart: React.FC<BaseLineChartProps> = ({
   width,
@@ -80,7 +86,7 @@ const BaseChart: React.FC<BaseLineChartProps> = ({
       <VictoryChart
         width={width}
         height={height}
-        scale={{ x: 'linear', y: 'linear' }}
+        scale={{ x: "linear", y: "linear" }}
         domain={domain}
         padding={DEFAULT_GRAPH_PADDING}
         containerComponent={

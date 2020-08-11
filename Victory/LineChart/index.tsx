@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import * as d3 from 'd3';
-import { DomainPropObjectType } from 'victory-core';
-import { LineProps, Dimensions } from '../../types';
-import { DEFAULT_COLOR, DEFAULT_GRAPH_MARGIN } from '../../../theme';
-import { downSample } from '../../../utils';
-import BaseChart from './BaseChart';
+import React, { useState } from "react";
+import * as d3 from "d3";
+import { DomainPropObjectType } from "victory-core";
+import {
+  LineProps,
+  Dimensions,
+} from "../../react-d3-chart/src/components/types";
+import {
+  DEFAULT_COLOR,
+  DEFAULT_GRAPH_MARGIN,
+} from "../../react-d3-chart/src/theme";
+import { downSample } from "../../react-d3-chart/src/utils";
+import BaseChart from "./BaseChart";
 
 interface SelfProps {
   xDomain: [number, number];
@@ -12,7 +18,7 @@ interface SelfProps {
   data: Array<LineProps>;
   lineClassName?: string;
   contextHeight?: number;
-  viewMode?: 'stacked' | 'overlapped';
+  viewMode?: "stacked" | "overlapped";
   maxPoints?: number;
   color?: d3.ScaleOrdinal<string, string>;
   tickCount?: number;
@@ -26,8 +32,8 @@ interface State {
   selectedDomain: DomainPropObjectType;
 }
 const filterDomain = (
-  data: SelfProps['data'],
-  selectedDomain: State['selectedDomain']
+  data: SelfProps["data"],
+  selectedDomain: State["selectedDomain"]
 ) =>
   data.map((line) => {
     return line.filter(
@@ -43,14 +49,14 @@ const LineChart: React.FC<LineChartProps> = ({
   data,
   margin = DEFAULT_GRAPH_MARGIN,
   contextHeight,
-  viewMode = 'overlapped',
+  viewMode = "overlapped",
   maxPoints = 150,
   color = DEFAULT_COLOR,
   tickCount = 10,
   tooltipWidth,
   tooltipHeight,
 }) => {
-  const [selectedDomain, setSelectedDomain] = useState<State['selectedDomain']>(
+  const [selectedDomain, setSelectedDomain] = useState<State["selectedDomain"]>(
     {
       x: xDomain,
     }
@@ -65,7 +71,7 @@ const LineChart: React.FC<LineChartProps> = ({
         margin: `${margin.top}px ${margin.right}px ${margin.bottom}px ${margin.left}px`,
       }}
     >
-      {viewMode === 'stacked' ? (
+      {viewMode === "stacked" ? (
         filteredData.map((lineData, index) => (
           <BaseChart
             width={width}

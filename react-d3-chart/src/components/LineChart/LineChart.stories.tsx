@@ -2,7 +2,7 @@ import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import LineChart from '.';
 import { LineProps } from '../types';
-import { graphData } from '../../utils/rawData';
+import { graphData } from '../../utils/rawData.test';
 
 const ranges = '1-5, 7-9';
 let data: Array<LineProps> = [];

@@ -10,11 +10,24 @@ export interface AxisProps {
   label?: string;
 }
 
-const Axis: React.FC<AxisProps> = ({ x, y, label, scale, type }) => {
+export const Axis: React.FC<AxisProps> = ({ x, y, label, scale, type }) => {
   const gRef = useRef<SVGGElement>();
 
   const d3Render = () => {
-    d3.select(gRef.current).call(d3[`axis${type}`](scale));
+    switch (type) {
+      case 'Top':
+        d3.select(gRef.current).call(d3.axisTop(scale));
+        break;
+      case 'Right':
+        d3.select(gRef.current).call(d3.axisRight(scale));
+        break;
+      case 'Bottom':
+        d3.select(gRef.current).call(d3.axisBottom(scale));
+        break;
+      case 'Left':
+        d3.select(gRef.current).call(d3.axisLeft(scale));
+        break;
+    }
   };
 
   const labelPos = () => {

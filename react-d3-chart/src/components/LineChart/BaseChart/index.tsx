@@ -11,7 +11,7 @@ import {
 } from '../../types';
 import Overlay from '../..//Overlay';
 import Context from '../../Context';
-import LineContainer from '../Lines';
+import LineContainer from '../../Lines';
 import { DEFAULT_COLOR } from '../../../theme';
 
 const CONTEXT_HEIGHT = 40;
@@ -32,7 +32,7 @@ export type BaseLineChartProps = SelfProps &
   Partial<Pick<CommonProps, 'color' | 'graphIndex'>> &
   Pick<CommonProps, 'data'>;
 
-const BaseChart: React.FC<BaseLineChartProps> = ({
+export const BaseChart: React.FC<BaseLineChartProps> = ({
   width,
   height,
   data,
@@ -59,9 +59,11 @@ const BaseChart: React.FC<BaseLineChartProps> = ({
   const { selectedDomain, eventSource } = domainState;
 
   useEffect(() => {
-    if (zoom && eventSource != `zoom${graphIndex}`) {
+    if (svgRef.current && zoom && eventSource != `zoom${graphIndex}`) {
       const svg = d3.select(svgRef.current);
+      // @ts-ignore
       svg.call(
+        // @ts-ignore
         zoom.transform,
         d3.zoomIdentity
           .scale(
@@ -100,8 +102,12 @@ const BaseChart: React.FC<BaseLineChartProps> = ({
           [width, height],
         ])
         .on('zoom', zoomed);
+      // @ts-ignore
       svg.call(zoom);
       setZoomState({ zoom });
+      return () => {
+        zoom.on('zoom', null);
+      };
     }
   }, [svgRef, width, height, xScaleContext]);
 

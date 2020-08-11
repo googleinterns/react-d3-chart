@@ -1,8 +1,8 @@
 import React from 'react';
 import BisectorTooltip from './BisectorTooltip';
 import { BisectorLine } from './styles';
-import { TooltipState, CommonProps, Dimensions } from '../../types';
-import { DEFAULT_COLOR } from '../../../theme';
+import { TooltipState, CommonProps, Dimensions } from '../types';
+import { DEFAULT_COLOR } from '../../theme';
 
 interface SelfProps {
   tooltipHeight?: number;
@@ -10,12 +10,12 @@ interface SelfProps {
   tooltipState: TooltipState;
 }
 
-type Props = SelfProps &
+export type BisectorProps = SelfProps &
   Pick<Dimensions, 'height'> &
   Partial<Pick<CommonProps, 'color' | 'graphIndex' | 'graphWidth'>> &
   Pick<CommonProps, 'data'>;
 
-const Bisector: React.FC<Props> = ({
+export const Bisector: React.FC<BisectorProps> = ({
   tooltipState,
   data,
   height,

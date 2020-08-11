@@ -1,7 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
 import { Dimensions, TooltipState, Scales, CommonProps } from '../types';
-import Bisector from './Bisector';
+import Bisector from '../Bisector';
 import { ScannerRect } from './styles';
 import { DEFAULT_COLOR } from '../../theme';
 
@@ -10,13 +10,13 @@ interface SelfProps {
   setTooltipState: (tooltipState: TooltipState) => void;
 }
 
-export type Props = SelfProps &
+export type OverlayProps = SelfProps &
   Dimensions &
   Pick<Scales, 'xScale'> &
   Partial<Pick<CommonProps, 'color' | 'graphIndex'>> &
   Pick<CommonProps, 'data'>;
 
-const Overlay: React.FC<Props> = ({
+export const Overlay: React.FC<OverlayProps> = ({
   height,
   width,
   xScale,

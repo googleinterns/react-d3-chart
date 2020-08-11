@@ -8,9 +8,14 @@ interface SelfProps {
   color: string;
 }
 
-export type Props = SelfProps & Pick<Scales, 'xScale' | 'yScale'>;
+export type LineCmpProps = SelfProps & Pick<Scales, 'xScale' | 'yScale'>;
 
-const Line: React.FC<Props> = ({ color, coordinates, xScale, yScale }) => {
+export const Line: React.FC<LineCmpProps> = ({
+  color,
+  coordinates,
+  xScale,
+  yScale,
+}) => {
   const line = d3
     .line<Coordinate>()
     .defined(
