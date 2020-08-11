@@ -1,8 +1,8 @@
 import React from 'react';
 import * as d3 from 'd3';
 import { TooltipContainer } from './styles';
-import { DEFAULT_COLOR } from '../../../../theme';
-import { Coordinate, Dimensions, CommonProps } from '../../../types';
+import { DEFAULT_COLOR } from '../../../theme';
+import { Coordinate, Dimensions, CommonProps } from '../../types';
 
 const TOOLTIP_X_OFFSET = 20;
 
@@ -18,7 +18,7 @@ type BisectorTooltipProps = SelfProps &
 
 const bisect = d3.bisector((coord: Coordinate) => coord.x).left;
 
-const BisectorTooltip: React.FC<BisectorTooltipProps> = ({
+export const BisectorTooltip: React.FC<BisectorTooltipProps> = ({
   data,
   x,
   width,

@@ -22,7 +22,7 @@ export type ContextProps = SelfProps &
   Partial<Pick<CommonProps, 'color' | 'graphIndex'>> &
   Pick<CommonProps, 'data'>;
 
-const Context: React.FC<ContextProps> = ({
+export const Context: React.FC<ContextProps> = ({
   margin,
   height,
   graphHeight,
@@ -68,8 +68,8 @@ const Context: React.FC<ContextProps> = ({
     if (!d3.event.sourceEvent || d3.event.sourceEvent.type === 'zoom') {
       return;
     }
-    const s = d3.event.selection || xScale.range();
-    const newGraphDomain = s.map(xScale.invert, xScale);
+    const s = d3.event.selection || xScaleContext.range();
+    const newGraphDomain = s.map(xScaleContext.invert, xScaleContext);
     onBrush({ selectedDomain: newGraphDomain, eventSource: brushEventID });
   };
 
@@ -83,10 +83,12 @@ const Context: React.FC<ContextProps> = ({
       brush.on('brush end', brushed);
       brushContainer.call(brush);
       brushContainer.call(brush.move, xScaleContext.range());
-      brushContainer.call(brush.move, xScale.range());
       setBrushState({ brush });
+      return () => {
+        brush.on('brush end', null);
+      };
     }
-  }, [brushRef, brushEventID]);
+  }, [brushRef, brushEventID, xScaleContext]);
 
   useEffect(() => {
     if (brushRef.current && brush && eventSource != brushEventID) {

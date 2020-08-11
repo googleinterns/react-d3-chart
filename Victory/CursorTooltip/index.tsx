@@ -1,8 +1,11 @@
-import React from 'react';
-import * as d3 from 'd3';
-import { TooltipContainer } from './styles';
-import { Coordinate, Dimensions } from '../../types';
-import { DEFAULT_COLOR } from '../../../theme';
+import React from "react";
+import * as d3 from "d3";
+import { TooltipContainer } from "./styles";
+import {
+  Coordinate,
+  Dimensions,
+} from "../../react-d3-chart/src/components/types";
+import { DEFAULT_COLOR } from "../../react-d3-chart/src/theme";
 
 export interface CursorTooltipProps {
   data: Coordinate[][];
@@ -13,7 +16,7 @@ export interface CursorTooltipProps {
   graphWidth: number;
   xDomain: [number, number];
   selectedXDomain: [number, number];
-  graphPadding: Dimensions['margin'];
+  graphPadding: Dimensions["margin"];
   color?: d3.ScaleOrdinal<string, string>;
   tooltipXOffset?: number;
   tooltipYOffset?: number;
@@ -24,10 +27,10 @@ export interface CursorTooltipProps {
 // Custom scaled X calculation till this issue with
 // zoom and cursor onCursorChange is solved
 const scaleX = (
-  x: CursorTooltipProps['x'],
-  selectedXDomain: CursorTooltipProps['selectedXDomain'],
-  width: CursorTooltipProps['width'],
-  graphPadding: CursorTooltipProps['graphPadding']
+  x: CursorTooltipProps["x"],
+  selectedXDomain: CursorTooltipProps["selectedXDomain"],
+  width: CursorTooltipProps["width"],
+  graphPadding: CursorTooltipProps["graphPadding"]
 ) => {
   // x is the cursor pixel offset from the left hand side of the containing svg
   if (x === null) return -1;
@@ -73,7 +76,7 @@ const CursorTooltip: React.FC<CursorTooltipProps> = ({
     if (scaledX < xDomain[1] && scaledX >= xDomain[0]) {
       return line[scaledX].y;
     }
-    return 'Unknown';
+    return "Unknown";
   });
 
   const tooltipEntries = yValues.map((y, index) => (

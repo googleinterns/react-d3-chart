@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import * as d3 from 'd3';
 import {
   Dimensions,
@@ -41,7 +41,7 @@ const filterDomain = (
     );
   });
 
-const LineChart: React.FC<LineChartProps> = ({
+export const LineChart: React.FC<LineChartProps> = ({
   width,
   height,
   xDomain,
@@ -79,6 +79,13 @@ const LineChart: React.FC<LineChartProps> = ({
     () => d3.scaleLinear().range([contextHeight, 0]).domain(yDomain),
     [contextHeight, yDomain]
   );
+
+  useEffect(() => {
+    setDomainState({
+      selectedDomain: xDomain,
+      eventSource: '',
+    });
+  }, [width, height, xDomain, yDomain, viewMode]);
 
   const domainFilteredData = filterDomain(data, selectedDomain);
   const filteredData = downSample(domainFilteredData, maxPoints);

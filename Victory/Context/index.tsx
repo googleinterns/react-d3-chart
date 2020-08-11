@@ -1,13 +1,17 @@
-import React, { useMemo } from 'react';
-import * as d3 from 'd3';
-import { VictoryBrushContainer } from 'victory-brush-container';
-import { VictoryChart } from 'victory-chart';
-import { DomainPropObjectType } from 'victory-core';
-import { VictoryAxis } from 'victory-axis';
-import { VictoryLine } from 'victory-line';
-import { Dimensions, Coordinate, LineProps } from '../../types';
-import { DEFAULT_COLOR } from '../../../theme';
-import { downSample } from '../../../utils';
+import React, { useMemo } from "react";
+import * as d3 from "d3";
+import { VictoryBrushContainer } from "victory-brush-container";
+import { VictoryChart } from "victory-chart";
+import { DomainPropObjectType } from "victory-core";
+import { VictoryAxis } from "victory-axis";
+import { VictoryLine } from "victory-line";
+import {
+  Dimensions,
+  Coordinate,
+  LineProps,
+} from "../../react-d3-chart/src/components/types";
+import { DEFAULT_COLOR } from "../../react-d3-chart/src/theme";
+import { downSample } from "../../react-d3-chart/src/utils";
 
 const CONTEXT_HEIGHT = 90;
 const CONTEXT_INNER_PADDING_BOTTOM = 30;
@@ -65,7 +69,7 @@ const Context: React.FC<ContextProps> = ({
     <VictoryChart
       width={width}
       height={height}
-      scale={{ x: 'linear', y: 'linear' }}
+      scale={{ x: "linear", y: "linear" }}
       domain={entireDomain}
       padding={{
         right: margin.right,

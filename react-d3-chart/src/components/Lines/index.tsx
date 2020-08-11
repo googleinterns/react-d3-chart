@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
-import { Scales, CommonProps } from '../../types';
-import Line from '../../Line';
-import { DEFAULT_COLOR } from '../../../theme';
+import { Scales, CommonProps } from '../types';
+import Line from '../Line';
+import { DEFAULT_COLOR } from '../../theme';
 
 export type LineContainerProps = Pick<Scales, 'xScale' | 'yScale'> &
   Pick<CommonProps, 'data'> &
   Partial<Pick<CommonProps, 'color' | 'graphIndex'>>;
 
-const LineContainer: React.FC<LineContainerProps> = ({
+export const LineContainer: React.FC<LineContainerProps> = ({
   color = DEFAULT_COLOR,
   data,
   xScale,
