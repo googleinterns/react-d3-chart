@@ -1,9 +1,11 @@
 {
-  "name": "react-d3-chart",
-  "version": "0.1.0",
+  "name": "d3-react-chart",
+  "version": "0.1.3",
   "main": "dist/js/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/js/index.d.ts",
+  "author": "Craig Lewis <craigericlewis@gmail.com>",
+  "license": "Apache-2.0",
   "private": false,
   "publishConfig": {
     "access": "public",
@@ -75,5 +77,12 @@
     "babel-plugin-typescript-to-proptypes": "^1.4.0",
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2"
-  }
+  },
+  "repository": {
+    "url": "https://github.com/googleinterns/react-d3-chart",
+    "type": "git"
+  },
+  "files": [
+    "dist/**/*"
+  ]
 }
