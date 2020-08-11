@@ -22,11 +22,9 @@ jobs:
         working-directory: ./react-d3-chart
         run: |
           yarn build:lib
-      - name: Release Package
-        working-directory: ./react-d3-chart    
       - name: Yarn Package Publish
-      uses: luvies/action-yarn-publish@v0.1.1
+        working-directory: ./react-d3-chart
+        uses: luvies/action-yarn-publish@v0.1.1
         env:
           GH_TOKEN: ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
