@@ -1,6 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
-import { Dimensions, TooltipState, Scales, CommonProps } from '../types';
+import { Dimensions, TooltipState, Scales, CommonProps } from '../../types';
 import Bisector from '../Bisector';
 import { ScannerRect } from './styles';
 import { DEFAULT_COLOR } from '../../theme';

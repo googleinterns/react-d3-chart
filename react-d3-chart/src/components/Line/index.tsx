@@ -1,6 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
-import { LineProps, Coordinate, Scales } from '../types';
+import { LineProps, Coordinate, Scales } from '../../types';
 import { LineContainer } from './styles';
 
 interface SelfProps {

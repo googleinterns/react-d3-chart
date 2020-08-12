@@ -6,9 +6,9 @@ import {
   DomainState,
   CommonProps,
   Domains,
-} from '../types';
+} from '../../types';
 import { DEFAULT_COLOR } from '../../theme';
-import { downSample } from '../../utils';
+import { downSample, getDomain } from '../../utils';
 import BaseChart from './BaseChart';
 import { LineChartContainer } from './styles';
 
@@ -27,7 +27,7 @@ interface SelfProps {
 
 export type LineChartProps = SelfProps &
   Dimensions &
-  Domains &
+  Partial<Domains> &
   Partial<Pick<CommonProps, 'color' | 'maxPoints'>> &
   Pick<CommonProps, 'data'>;
 
@@ -53,13 +53,17 @@ export const LineChart: React.FC<LineChartProps> = ({
   color = DEFAULT_COLOR,
   maxPoints = 150,
 }) => {
+  const { derivedXDomain, derivedYDomain } = useMemo(
+    () => getDomain(xDomain, yDomain, data),
+    [xDomain, yDomain, data]
+  );
   const [tooltipState, setTooltipState] = useState<TooltipState>({
     enabled: false,
     xOffset: 0,
     xScaled: 0,
   });
   const [domainState, setDomainState] = useState<DomainState>({
-    selectedDomain: xDomain,
+    selectedDomain: derivedXDomain,
     eventSource: '',
   });
   const { selectedDomain } = domainState;
@@ -68,24 +72,24 @@ export const LineChart: React.FC<LineChartProps> = ({
     [width, selectedDomain]
   );
   const xScaleContext = useMemo(
-    () => d3.scaleLinear().range([0, width]).domain(xDomain),
-    [width, xDomain]
+    () => d3.scaleLinear().range([0, width]).domain(derivedXDomain),
+    [width, derivedXDomain]
   );
   const yScale = useMemo(
-    () => d3.scaleLinear().range([height, 0]).domain(yDomain),
-    [height, yDomain]
+    () => d3.scaleLinear().range([height, 0]).domain(derivedYDomain),
+    [height, derivedYDomain]
   );
   const yScaleContext = useMemo(
-    () => d3.scaleLinear().range([contextHeight, 0]).domain(yDomain),
-    [contextHeight, yDomain]
+    () => d3.scaleLinear().range([contextHeight, 0]).domain(derivedYDomain),
+    [contextHeight, derivedYDomain]
   );
 
   useEffect(() => {
     setDomainState({
-      selectedDomain: xDomain,
+      selectedDomain: derivedXDomain,
       eventSource: '',
     });
-  }, [width, height, xDomain, yDomain, viewMode]);
+  }, [width, height, derivedXDomain, derivedYDomain, viewMode]);
 
   const domainFilteredData = filterDomain(data, selectedDomain);
   const filteredData = downSample(domainFilteredData, maxPoints);
