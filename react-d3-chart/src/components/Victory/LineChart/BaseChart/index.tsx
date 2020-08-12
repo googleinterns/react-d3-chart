@@ -2,14 +2,21 @@ import React, { useMemo } from 'react';
 import * as d3 from 'd3';
 import { VictoryZoomContainerProps } from 'victory-zoom-container';
 import { VictoryCursorContainerProps } from 'victory-cursor-container';
+import { VictoryBrushContainer } from 'victory-brush-container';
 import { VictoryChart } from 'victory-chart';
 import { DomainPropObjectType } from 'victory-core';
 import { VictoryLine } from 'victory-line';
 import { createContainer } from 'victory';
 import { VictoryAxis } from 'victory-axis';
+import ModeSelectionContainer from '../../../ModeSelectionContainer';
 import Context from '../../Context';
 import CursorTooltip from '../../CursorTooltip';
-import { LineProps, Dimensions } from '../../../types';
+import {
+  LineProps,
+  Dimensions,
+  RangeSelectionState,
+  ModeTypes,
+} from '../../../types';
 import { DEFAULT_COLOR, DEFAULT_GRAPH_PADDING } from '../../../../theme';
 
 const ZoomCursorContainer = createContainer<
@@ -31,6 +38,10 @@ interface SelfProps {
   selectedDomain: DomainPropObjectType;
   handleDomainChange: (selectedDomain: DomainPropObjectType) => void;
   startIndex: number;
+  cursorMode: ModeTypes;
+  setCursorMode: (cursorMode: ModeTypes) => void;
+  rangeSelection: RangeSelectionState;
+  setRangeSelection: (rangeSelection: RangeSelectionState) => void;
 }
 
 export type BaseLineChartProps = SelfProps &
@@ -51,7 +62,19 @@ const BaseChart: React.FC<BaseLineChartProps> = ({
   selectedDomain,
   handleDomainChange,
   startIndex,
+  cursorMode,
+  setCursorMode,
+  rangeSelection,
+  setRangeSelection,
 }) => {
+  const { domain: graphSelectedDomain } = rangeSelection;
+  const handleGraphBrush = (domain: DomainPropObjectType) => {
+    setRangeSelection({ enabled: true, domain: domain });
+  };
+  const clearGraphBrush = (domain: DomainPropObjectType) => {
+    setRangeSelection({ enabled: false, domain: domain });
+  };
+
   const domain = {
     x: xDomain,
     y: yDomain,
@@ -75,6 +98,39 @@ const BaseChart: React.FC<BaseLineChartProps> = ({
     [filteredData, color]
   );
 
+  const containerComponent =
+    cursorMode === 'intersection' ? (
+      <ZoomCursorContainer
+        responsive={false}
+        zoomDimension="x"
+        zoomDomain={selectedDomain}
+        cursorDimension="x"
+        onZoomDomainChange={handleDomainChange}
+        cursorLabel={(point) => point.x}
+        cursorLabelComponent={
+          <CursorTooltip
+            data={data}
+            graphWidth={width}
+            xDomain={xDomain}
+            selectedXDomain={selectedDomain.x as [number, number]}
+            graphPadding={DEFAULT_GRAPH_PADDING}
+            width={tooltipWidth}
+            height={tooltipHeight}
+            startIndex={startIndex}
+          />
+        }
+      />
+    ) : (
+      <VictoryBrushContainer
+        responsive={false}
+        brushDimension="x"
+        defaultBrushArea="none"
+        brushDomain={graphSelectedDomain}
+        onBrushDomainChange={handleGraphBrush}
+        onBrushCleared={clearGraphBrush}
+      />
+    );
+
   return (
     <>
       <VictoryChart
@@ -83,28 +139,7 @@ const BaseChart: React.FC<BaseLineChartProps> = ({
         scale={{ x: 'linear', y: 'linear' }}
         domain={domain}
         padding={DEFAULT_GRAPH_PADDING}
-        containerComponent={
-          <ZoomCursorContainer
-            responsive={false}
-            zoomDimension="x"
-            zoomDomain={selectedDomain}
-            cursorDimension="x"
-            onZoomDomainChange={handleDomainChange}
-            cursorLabel={(point) => point.x}
-            cursorLabelComponent={
-              <CursorTooltip
-                data={data}
-                graphWidth={width}
-                xDomain={xDomain}
-                selectedXDomain={selectedDomain.x as [number, number]}
-                graphPadding={DEFAULT_GRAPH_PADDING}
-                width={tooltipWidth}
-                height={tooltipHeight}
-                startIndex={startIndex}
-              />
-            }
-          />
-        }
+        containerComponent={containerComponent}
       >
         <VictoryAxis
           crossAxis={false}
@@ -133,6 +168,7 @@ const BaseChart: React.FC<BaseLineChartProps> = ({
         tickCount={tickCount}
         startIndex={startIndex}
       />
+      <ModeSelectionContainer width={width} selectMode={setCursorMode} />
     </>
   );
 };

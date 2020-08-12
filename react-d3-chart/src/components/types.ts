@@ -1,3 +1,4 @@
+import { DomainPropObjectType } from 'victory-core';
 export type LineProps = Array<Coordinate>;
 
 export interface Dimensions {
@@ -22,3 +23,10 @@ export interface BisectorTooltipEntry {
   color: string;
   y: number;
 }
+
+export interface RangeSelectionState {
+  domain: DomainPropObjectType;
+  enabled: boolean;
+}
+
+export type ModeTypes = 'selection' | 'intersection';

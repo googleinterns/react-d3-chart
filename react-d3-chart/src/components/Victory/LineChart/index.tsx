@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import * as d3 from 'd3';
 import { DomainPropObjectType } from 'victory-core';
-import { LineProps, Dimensions } from '../../types';
+import { LineProps, Dimensions, RangeSelectionState } from '../../types';
 import { DEFAULT_COLOR, DEFAULT_GRAPH_MARGIN } from '../../../theme';
 import { downSample } from '../../../utils';
 import BaseChart from './BaseChart';
+
+const DEFAULT_DOMAIN: DomainPropObjectType = {
+  x: [0, 0],
+  y: [0, 0],
+};
 
 interface SelfProps {
   xDomain: [number, number];
@@ -24,7 +29,10 @@ export type LineChartProps = SelfProps & Dimensions;
 
 interface State {
   selectedDomain: DomainPropObjectType;
+  cursorMode: 'selection' | 'intersection';
+  rangeSelection: RangeSelectionState;
 }
+
 const filterDomain = (
   data: SelfProps['data'],
   selectedDomain: State['selectedDomain']
@@ -50,11 +58,26 @@ const LineChart: React.FC<LineChartProps> = ({
   tooltipWidth,
   tooltipHeight,
 }) => {
+  const [cursorMode, setCursorMode] = useState<State['cursorMode']>(
+    'intersection'
+  );
   const [selectedDomain, setSelectedDomain] = useState<State['selectedDomain']>(
     {
       x: xDomain,
     }
   );
+  const [rangeSelection, setRangeSelection] = useState<State['rangeSelection']>(
+    { enabled: false, domain: DEFAULT_DOMAIN }
+  );
+
+  const changeCursorMode = (cursorMode: State['cursorMode']) => {
+    // setSelectedDomain({
+    //   x: xDomain,
+    //   y: yDomain,
+    // });
+    // setRangeSelection({ enabled: false, domain: DEFAULT_DOMAIN });
+    setCursorMode(cursorMode);
+  };
 
   const domainFilteredData = filterDomain(data, selectedDomain);
   const filteredData = downSample(domainFilteredData, maxPoints);
@@ -83,6 +106,10 @@ const LineChart: React.FC<LineChartProps> = ({
             contextHeight={contextHeight}
             key={`line-graph-${index}`}
             startIndex={index}
+            rangeSelection={rangeSelection}
+            setRangeSelection={setRangeSelection}
+            cursorMode={cursorMode}
+            setCursorMode={changeCursorMode}
           />
         ))
       ) : (
@@ -101,6 +128,10 @@ const LineChart: React.FC<LineChartProps> = ({
           color={color}
           contextHeight={contextHeight}
           startIndex={0}
+          rangeSelection={rangeSelection}
+          setRangeSelection={setRangeSelection}
+          cursorMode={cursorMode}
+          setCursorMode={changeCursorMode}
         />
       )}
     </div>
