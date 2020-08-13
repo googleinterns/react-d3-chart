@@ -28,7 +28,10 @@ storiesOf('LineChart', module).add('Overlapped', () => (
     // yDomain={[-100, 100]}
     data={data}
     viewMode={'overlapped'}
-    margin={{ top: 50, left: 50, right: 50, bottom: 200 }}
+    margin={{ top: 50, left: 50, right: 50, bottom: 50 }}
+    selectionCallback={(selection) => {
+      console.log(selection);
+    }}
   />
 ));
 
@@ -40,6 +43,9 @@ storiesOf('LineChart', module).add('Stacked', () => (
     // yDomain={[-100, 100]}
     data={data}
     viewMode={'stacked'}
-    margin={{ top: 50, left: 50, right: 50, bottom: 200 }}
+    margin={{ top: 50, left: 50, right: 50, bottom: 50 }}
+    selectionCallback={(selection) => {
+      console.log(selection);
+    }}
   />
 ));

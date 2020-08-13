@@ -8,6 +8,8 @@ import {
   DomainState,
   Scales,
   CommonProps,
+  ModeTypes,
+  RangeSelectionState,
 } from '../../../types';
 import Overlay from '../..//Overlay';
 import Context from '../../Context';
@@ -22,8 +24,11 @@ interface SelfProps {
   contextHeight?: number;
   tooltipState: TooltipState;
   setTooltipState: (tooltipState: TooltipState) => void;
+  rangeSelectionState: RangeSelectionState;
+  setRangeSelectionState: (rangeSelectionState: RangeSelectionState) => void;
   domainState: DomainState;
   setDomainState: (domainState: DomainState) => void;
+  mode?: ModeTypes;
 }
 
 export type BaseLineChartProps = SelfProps &
@@ -47,8 +52,11 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
   graphIndex = 0,
   tooltipState,
   setTooltipState,
+  rangeSelectionState,
+  setRangeSelectionState,
   domainState,
   setDomainState,
+  mode = 'intersection',
 }) => {
   const svgRef = useRef<SVGGElement>();
   const [zoomState, setZoomState] = useState<{
@@ -79,7 +87,11 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
   useEffect(() => {
     if (svgRef.current) {
       const zoomed = () => {
-        if (!d3.event.sourceEvent || d3.event.sourceEvent.type === 'brush') {
+        if (
+          !d3.event.sourceEvent ||
+          d3.event.sourceEvent.type === 'brush' ||
+          (mode === 'selection' && d3.event.sourceEvent.type === 'mousemove')
+        ) {
           return;
         }
         const t = d3.event.transform;
@@ -109,12 +121,12 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
         zoom.on('zoom', null);
       };
     }
-  }, [svgRef, width, height, xScaleContext]);
+  }, [svgRef, width, height, xScaleContext, mode]);
 
   return (
     <svg
       width={width + margin.left + margin.right}
-      height={height + margin.top + margin.bottom}
+      height={height + margin.top + margin.bottom + contextHeight}
     >
       <g transform={`translate(${margin.left}, ${margin.top})`} ref={svgRef}>
         <LineContainer
@@ -135,7 +147,10 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
           graphIndex={graphIndex}
           tooltipState={tooltipState}
           setTooltipState={setTooltipState}
+          rangeSelectionState={rangeSelectionState}
+          setRangeSelectionState={setRangeSelectionState}
           color={color}
+          mode={mode}
         />
       </g>
       <Context
@@ -143,7 +158,6 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
         width={width}
         graphHeight={height}
         height={contextHeight}
-        xScale={xScale}
         xScaleContext={xScaleContext}
         yScaleContext={yScaleContext}
         data={data}
