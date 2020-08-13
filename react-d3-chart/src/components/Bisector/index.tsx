@@ -21,7 +21,7 @@ export const Bisector: React.FC<BisectorProps> = ({
   height,
   tooltipHeight = 140,
   tooltipWidth = 90,
-  graphIndex,
+  graphIndex = 0,
   graphWidth,
   color = DEFAULT_COLOR,
 }) => {

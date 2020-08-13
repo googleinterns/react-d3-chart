@@ -1,4 +1,5 @@
 export type LineProps = Array<Coordinate>;
+export type ModeTypes = 'selection' | 'intersection';
 
 export interface Dimensions {
   width: number;
@@ -22,6 +23,11 @@ export interface TooltipState {
   xOffset: number;
   xScaled: number;
   enabled: boolean;
+}
+
+export interface RangeSelectionState {
+  selection: [number, number];
+  eventSource: string;
 }
 
 export interface DomainState {

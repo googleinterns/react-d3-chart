@@ -24,7 +24,7 @@ interface State {
 
 export type ContextProps = SelfProps &
   Dimensions &
-  Pick<Scales, 'xScaleContext' | 'yScaleContext' | 'xScale'> &
+  Pick<Scales, 'xScaleContext' | 'yScaleContext'> &
   Partial<Pick<CommonProps, 'color' | 'graphIndex'>> &
   Pick<CommonProps, 'data'>;
 
@@ -36,7 +36,6 @@ export const Context: React.FC<ContextProps> = ({
   data,
   xScaleContext,
   yScaleContext,
-  xScale,
   onBrush,
   color = DEFAULT_COLOR,
   graphIndex = 0,
@@ -99,10 +98,12 @@ export const Context: React.FC<ContextProps> = ({
   useEffect(() => {
     if (brushRef.current && brush && eventSource !== brushEventID) {
       const brushContainer = d3.select(brushRef.current);
+      brush.on('brush end', null);
       brushContainer.call(brush.move, [
         xScaleContext(selectedDomain[0]),
         xScaleContext(selectedDomain[1]),
       ]);
+      brush.on('brush end', brushed);
     }
   }, [selectedDomain, brushRef.current, eventSource, brush]);
 

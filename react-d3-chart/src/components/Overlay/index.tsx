@@ -1,13 +1,24 @@
 import React from 'react';
 import * as d3 from 'd3';
-import { Dimensions, TooltipState, Scales, CommonProps } from '../../types';
+import {
+  Dimensions,
+  TooltipState,
+  Scales,
+  CommonProps,
+  ModeTypes,
+  RangeSelectionState,
+} from '../../types';
 import Bisector from '../Bisector';
+import RangeSelection from '../RangeSelection';
 import { ScannerRect } from './styles';
 import { DEFAULT_COLOR } from '../../theme';
 
 interface SelfProps {
   tooltipState: TooltipState;
   setTooltipState: (tooltipState: TooltipState) => void;
+  mode: ModeTypes;
+  rangeSelectionState: RangeSelectionState;
+  setRangeSelectionState: (rangeSelectionState: RangeSelectionState) => void;
 }
 
 export type OverlayProps = SelfProps &
@@ -25,7 +36,11 @@ export const Overlay: React.FC<OverlayProps> = ({
   graphIndex,
   tooltipState,
   setTooltipState,
+  rangeSelectionState,
+  setRangeSelectionState,
+  mode = 'intersection',
 }) => {
+  const { selection, eventSource } = rangeSelectionState;
   const onMouseOver = () =>
     setTooltipState({ enabled: true, xOffset: 0, xScaled: 0 });
   const onMouseOut = () =>
@@ -47,7 +62,7 @@ export const Overlay: React.FC<OverlayProps> = ({
         onMouseLeave={onMouseOut}
         onMouseMove={onMouseMove}
       ></ScannerRect>
-      {tooltipState.enabled && (
+      {tooltipState.enabled && mode === 'intersection' && (
         <Bisector
           color={color}
           tooltipState={tooltipState}
@@ -55,6 +70,17 @@ export const Overlay: React.FC<OverlayProps> = ({
           data={data}
           graphIndex={graphIndex}
           graphWidth={width}
+        />
+      )}
+      {mode === 'selection' && (
+        <RangeSelection
+          width={width}
+          height={height}
+          selection={selection}
+          eventSource={eventSource}
+          onBrush={setRangeSelectionState}
+          xScale={xScale}
+          graphIndex={graphIndex}
         />
       )}
     </>
