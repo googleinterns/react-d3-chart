@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Scales, CommonProps } from '../types';
+import { Scales, CommonProps } from '../../types';
 import Line from '../Line';
 import { DEFAULT_COLOR } from '../../theme';
 

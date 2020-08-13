@@ -8,7 +8,7 @@ import {
   DomainState,
   Scales,
   CommonProps,
-} from '../../types';
+} from '../../../types';
 import Overlay from '../..//Overlay';
 import Context from '../../Context';
 import LineContainer from '../../Lines';
@@ -59,7 +59,7 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
   const { selectedDomain, eventSource } = domainState;
 
   useEffect(() => {
-    if (svgRef.current && zoom && eventSource != `zoom${graphIndex}`) {
+    if (svgRef.current && zoom && eventSource !== `zoom${graphIndex}`) {
       const svg = d3.select(svgRef.current);
       // @ts-ignore
       svg.call(

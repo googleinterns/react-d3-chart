@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import LineChart from '.';
-import { LineProps } from '../types';
+import { LineProps } from '../../types';
 import { graphData } from '../../utils/rawData.test';
 
 const ranges = '1-5, 7-9';
@@ -24,8 +24,8 @@ storiesOf('LineChart', module).add('Overlapped', () => (
   <LineChart
     width={1000}
     height={500}
-    xDomain={[0, 900]}
-    yDomain={[-100, 100]}
+    // xDomain={[0, 900]}
+    // yDomain={[-100, 100]}
     data={data}
     viewMode={'overlapped'}
     margin={{ top: 50, left: 50, right: 50, bottom: 200 }}
@@ -36,8 +36,8 @@ storiesOf('LineChart', module).add('Stacked', () => (
   <LineChart
     width={1000}
     height={500}
-    xDomain={[0, 900]}
-    yDomain={[-100, 100]}
+    // xDomain={[0, 900]}
+    // yDomain={[-100, 100]}
     data={data}
     viewMode={'stacked'}
     margin={{ top: 50, left: 50, right: 50, bottom: 200 }}

@@ -31,7 +31,8 @@
     "develop": "yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "deploy-storybook": "storybook-to-ghpages --out=storybook-static"
+    "deploy-storybook": "storybook-to-ghpages --out=storybook-static",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -69,6 +70,7 @@
     "babel-plugin-typescript-to-proptypes": "^1.4.0",
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
+    "cypress": "^4.12.1",
     "typescript": "^3.9.7"
   },
   "repository": {

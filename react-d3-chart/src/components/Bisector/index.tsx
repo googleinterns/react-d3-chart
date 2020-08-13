@@ -1,7 +1,7 @@
 import React from 'react';
 import BisectorTooltip from './BisectorTooltip';
 import { BisectorLine } from './styles';
-import { TooltipState, CommonProps, Dimensions } from '../types';
+import { TooltipState, CommonProps, Dimensions } from '../../types';
 import { DEFAULT_COLOR } from '../../theme';
 
 interface SelfProps {

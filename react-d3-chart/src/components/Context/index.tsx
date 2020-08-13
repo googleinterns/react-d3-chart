@@ -1,6 +1,12 @@
 import React, { useMemo, useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { Dimensions, Margin, DomainState, Scales, CommonProps } from '../types';
+import {
+  Dimensions,
+  Margin,
+  DomainState,
+  Scales,
+  CommonProps,
+} from '../../types';
 import Axis from '../Axis';
 import Line from '../Line';
 import { DEFAULT_COLOR } from '../../theme';
@@ -91,7 +97,7 @@ export const Context: React.FC<ContextProps> = ({
   }, [brushRef, brushEventID, xScaleContext]);
 
   useEffect(() => {
-    if (brushRef.current && brush && eventSource != brushEventID) {
+    if (brushRef.current && brush && eventSource !== brushEventID) {
       const brushContainer = d3.select(brushRef.current);
       brushContainer.call(brush.move, [
         xScaleContext(selectedDomain[0]),

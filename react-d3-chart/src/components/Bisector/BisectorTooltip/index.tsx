@@ -2,7 +2,7 @@ import React from 'react';
 import * as d3 from 'd3';
 import { TooltipContainer } from './styles';
 import { DEFAULT_COLOR } from '../../../theme';
-import { Coordinate, Dimensions, CommonProps } from '../../types';
+import { Coordinate, Dimensions, CommonProps } from '../../../types';
 
 const TOOLTIP_X_OFFSET = 20;
 
