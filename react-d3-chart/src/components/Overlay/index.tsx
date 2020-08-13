@@ -1,5 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
+import _ from 'lodash';
 import {
   Dimensions,
   TooltipState,
@@ -54,6 +55,9 @@ export const Overlay: React.FC<OverlayProps> = ({
     setTooltipState({ enabled: true, xOffset: mouseX, xScaled: timeX });
   };
 
+  // Adds a 100ms delay between onMouseMove calls for performance improvement purposes
+  const throttledMouseMove = _.throttle(onMouseMove, 0.1);
+
   return (
     <>
       <ScannerRect
@@ -61,7 +65,7 @@ export const Overlay: React.FC<OverlayProps> = ({
         width={width}
         onMouseEnter={onMouseOver}
         onMouseLeave={onMouseOut}
-        onMouseMove={onMouseMove}
+        onMouseMove={throttledMouseMove}
       ></ScannerRect>
       {tooltipState.enabled && mode === 'intersection' && (
         <Bisector
