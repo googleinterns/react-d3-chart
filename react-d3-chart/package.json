@@ -1,6 +1,6 @@
 {
   "name": "d3-react-chart",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "main": "./dist/js/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/js/index.d.ts",
@@ -22,14 +22,14 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:lib": "yarn build:babel && yarn build:types && node ./scripts/copyTS.js",
-    "build:babel": "concurrently \"yarn build:babel:esm && yarn build:babel:umd\" \"yarn build:babel:cjs\"",
+    "build:lib": "./node_modules/yarn/bin/yarn build:babel && ./node_modules/yarn/bin/yarn build:types && node ./scripts/copyTS.js",
+    "build:babel": "concurrently \"./node_modules/yarn/bin/yarn build:babel:esm && ./node_modules/yarn/bin/yarn build:babel:umd\" \"./node_modules/yarn/bin/yarn build:babel:cjs\"",
     "build:babel:cjs": "cross-env BABEL_ENV=cjs babel --source-maps --extensions \".js,.ts,.tsx\" src --out-dir dist/js --presets=@babel/env --ignore **/*.spec.ts,**/*.test.ts,**/*.stories.js",
     "build:babel:esm": "cross-env BABEL_ENV=esm babel --source-maps --extensions \".js,.ts,.tsx\" src --out-dir dist/esm --ignore **/*.spec.ts,**/*.test.ts,**/*.stories.js",
     "build:babel:umd": "cross-env BABEL_ENV=umd babel --source-maps --extensions \".js\" dist/esm --out-dir dist/umd --plugins=transform-es2015-modules-umd --ignore **/*.spec.ts,**/*.test.ts,**/*.stories.js",
     "build:types": "tsc -p tsconfig.gen-dts.json",
     "clean": "rimraf dist",
-    "develop": "yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose",
+    "develop": "./node_modules/yarn/bin/yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
     "deploy-storybook": "storybook-to-ghpages --out=storybook-static",
@@ -72,7 +72,8 @@
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
     "cypress": "^4.12.1",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "yarn": "^1.22.4"
   },
   "repository": {
     "url": "https://github.com/googleinterns/react-d3-chart",
