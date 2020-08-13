@@ -34,7 +34,7 @@ interface SelfProps {
 export type LineChartProps = SelfProps &
   Dimensions &
   Partial<Domains> &
-  Partial<Pick<CommonProps, 'color' | 'maxPoints'>> &
+  Partial<Pick<CommonProps, 'color' | 'maxPoints' | 'tooltipEntryHeight'>> &
   Pick<CommonProps, 'data'>;
 
 const filterDomain = (
@@ -59,6 +59,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   color = DEFAULT_COLOR,
   maxPoints = 150,
   selectionCallback,
+  tooltipEntryHeight,
 }) => {
   const [mode, setMode] = useState<ModeTypes>('intersection');
   const { derivedXDomain, derivedYDomain } = useMemo(
@@ -152,6 +153,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         setDomainState={changeDomain}
         rangeSelectionState={rangeSelectionState}
         setRangeSelectionState={setRangeSelectionState}
+        tooltipEntryHeight={tooltipEntryHeight}
         mode={mode}
         key={`linechart-${index}`}
       />

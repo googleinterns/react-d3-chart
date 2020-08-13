@@ -24,7 +24,7 @@ interface SelfProps {
 export type OverlayProps = SelfProps &
   Dimensions &
   Pick<Scales, 'xScale'> &
-  Partial<Pick<CommonProps, 'color' | 'graphIndex'>> &
+  Partial<Pick<CommonProps, 'color' | 'graphIndex' | 'tooltipEntryHeight'>> &
   Pick<CommonProps, 'data'>;
 
 export const Overlay: React.FC<OverlayProps> = ({
@@ -39,6 +39,7 @@ export const Overlay: React.FC<OverlayProps> = ({
   rangeSelectionState,
   setRangeSelectionState,
   mode = 'intersection',
+  tooltipEntryHeight,
 }) => {
   const { selection, eventSource } = rangeSelectionState;
   const onMouseOver = () =>
@@ -67,6 +68,7 @@ export const Overlay: React.FC<OverlayProps> = ({
           color={color}
           tooltipState={tooltipState}
           height={height}
+          tooltipEntryHeight={tooltipEntryHeight}
           data={data}
           graphIndex={graphIndex}
           graphWidth={width}
