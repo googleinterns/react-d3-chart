@@ -1,3 +1,8 @@
+// BisectorTooltip Component
+/**
+ * Component to render the cursor bisector tooltip for a graph
+ * @packageDocumentation
+ */
 import React from 'react';
 import * as d3 from 'd3';
 import { TooltipContainer } from './styles';
@@ -6,18 +11,23 @@ import { Coordinate, Dimensions, CommonProps } from '../../../types';
 
 const TOOLTIP_X_OFFSET = 20;
 
+/** BisectorTooltip's own props */
 export interface SelfProps {
+  /** Current x domain value to display */
   x: number;
+  /** X offset of the tooltip in pixels from the left hand side of the graph */
   xOffset: number;
 }
 
-type BisectorTooltipProps = SelfProps &
+/** All BisectorTooltip props */
+export type BisectorTooltipProps = SelfProps &
   Pick<Dimensions, 'height' | 'width'> &
   Pick<CommonProps, 'data'> &
   Partial<Pick<CommonProps, 'color' | 'graphIndex' | 'graphWidth'>>;
 
 const bisect = d3.bisector((coord: Coordinate) => coord.x).left;
 
+/** BisectorTooltip Component  */
 export const BisectorTooltip: React.FC<BisectorTooltipProps> = ({
   data,
   x,

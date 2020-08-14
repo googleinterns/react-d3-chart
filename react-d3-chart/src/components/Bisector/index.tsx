@@ -1,20 +1,29 @@
+// Bisector Component
+/**
+ * Component to render the cursor bisector for a graph
+ * @packageDocumentation
+ */
 import React from 'react';
 import BisectorTooltip from './BisectorTooltip';
 import { BisectorLine } from './styles';
-import { TooltipState, CommonProps, Dimensions } from '../../types';
+import { CommonProps, Dimensions, TooltipStateManagement } from '../../types';
 import { DEFAULT_COLOR } from '../../theme';
 
-interface SelfProps {
-  tooltipEntryHeight?: number;
-  tooltipWidth?: number;
-  tooltipState: TooltipState;
-}
+export type BisectorProps = Pick<Dimensions, 'height'> &
+  Partial<
+    Pick<
+      CommonProps,
+      | 'color'
+      | 'graphIndex'
+      | 'graphWidth'
+      | 'tooltipEntryHeight'
+      | 'tooltipWidth'
+    >
+  > &
+  Pick<CommonProps, 'data'> &
+  Pick<TooltipStateManagement, 'tooltipState'>;
 
-export type BisectorProps = SelfProps &
-  Pick<Dimensions, 'height'> &
-  Partial<Pick<CommonProps, 'color' | 'graphIndex' | 'graphWidth'>> &
-  Pick<CommonProps, 'data'>;
-
+/** Cursor Line Bisector Component */
 export const Bisector: React.FC<BisectorProps> = ({
   tooltipState,
   data,

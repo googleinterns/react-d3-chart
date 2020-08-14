@@ -1,0 +1,6 @@
+{
+  "inputFiles": ["./src"],
+  "mode": "modules",
+  "out": "./storybook-static/docs",
+  "exclude": "./src/**/*+(.spec.ts|.stories.tsx|.test.ts)"
+}

@@ -32,8 +32,8 @@
     "clean": "rimraf dist",
     "develop": "./node_modules/yarn/bin/yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public",
-    "deploy-storybook": "storybook-to-ghpages --out=storybook-static",
+    "build-storybook": "build-storybook -s public && typedoc",
+    "deploy-storybook": "build-storybook && storybook-to-ghpages --existing-output-dir=.storybook-static",
     "cypress:open": "cypress open"
   },
   "eslintConfig": {
@@ -74,6 +74,7 @@
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
     "cypress": "^4.12.1",
+    "typedoc": "^0.18.0",
     "typescript": "^3.9.7",
     "yarn": "^1.22.4"
   },

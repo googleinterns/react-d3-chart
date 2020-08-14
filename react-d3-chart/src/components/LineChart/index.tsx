@@ -1,3 +1,8 @@
+// LineChart Component
+/**
+ * File containing the top level LineChart component
+ * @packageDocumentation
+ */
 import React, { useState, useMemo, useEffect } from 'react';
 import * as d3 from 'd3';
 import {
@@ -17,28 +22,43 @@ import ModeSelectionContainer from '../ModeSelectionContainer';
 
 const CONTEXT_HEIGHT = 40;
 
-export interface State {
+interface State {
   tooltipState: TooltipState;
   domainState: DomainState;
   rangeSelectionState: RangeSelectionState;
   mode: ModeTypes;
 }
 
-interface SelfProps {
-  lineClassName?: string;
-  contextHeight?: number;
+/** LineChart's own props */
+export interface LineChartSelfProps {
+  /** Current graph view mode */
   viewMode?: 'overlapped' | 'stacked';
+  /** Callback called when a selection is made in range selection mode */
   selectionCallback?: (selection: RangeSelectionState['selection']) => void;
+  /** Padding to add to either end of the yDomain */
   yDomainPadding?: number;
+  /** Maximum number of points to be displayed in the context per line */
   maxContextPoints?: number;
 }
 
-export type LineChartProps = SelfProps &
+/** All LineChart Props */
+export type LineChartProps = LineChartSelfProps &
   Dimensions &
   Partial<Domains> &
-  Partial<Pick<CommonProps, 'color' | 'maxPoints' | 'tooltipEntryHeight'>> &
+  Partial<
+    Pick<
+      CommonProps,
+      'color' | 'maxPoints' | 'tooltipEntryHeight' | 'contextHeight'
+    >
+  > &
   Pick<CommonProps, 'data'>;
 
+/**
+ *
+ * @param data Original Data Set to be filtered
+ * @param selectedDomain Upper and lower bound domain restriction on the data set
+ * @returns Filtered data set
+ */
 const filterDomain = (
   data: CommonProps['data'],
   selectedDomain: DomainState['selectedDomain']
@@ -49,6 +69,7 @@ const filterDomain = (
     );
   });
 
+/** LineChart Component */
 export const LineChart: React.FC<LineChartProps> = ({
   width,
   height,

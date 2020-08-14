@@ -1,16 +1,23 @@
+// ModeSelectionContainer Component
+/**
+ * File containing the button container to switch graph modes
+ * @packageDocumentation
+ */
 import React from 'react';
-import { Dimensions, ModeTypes, RangeSelectionState } from '../../types';
+import {
+  Dimensions,
+  ModeTypeStateManagement,
+  RangeSelectionState,
+} from '../../types';
 import { Container } from './styles';
 import ModeButton from './ModeButton';
 
-interface SelfProps {
-  selectMode: (mode: ModeTypes) => void;
-  mode: ModeTypes;
-  selection: RangeSelectionState['selection'];
-}
+/** All ModeSelectionContainer Props */
+type Props = ModeTypeStateManagement &
+  Pick<Dimensions, 'width'> &
+  Pick<RangeSelectionState, 'selection'>;
 
-type Props = SelfProps & Pick<Dimensions, 'width'>;
-
+/** ModeSelectionContainer Component */
 const ModeSelectionContainer: React.FC<Props> = ({
   selectMode,
   width,

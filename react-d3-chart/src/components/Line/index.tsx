@@ -1,15 +1,25 @@
+// Line Component
+/**
+ * Component to render a line to be displayed in a line chart
+ * @packageDocumentation
+ */
 import React from 'react';
 import * as d3 from 'd3';
 import { LineProps, Coordinate, Scales } from '../../types';
 import { LineContainer } from './styles';
 
-interface SelfProps {
+/** Line's own props */
+export interface LineSelfProps {
+  /** Data points for the line */
   coordinates: LineProps;
+  /** Line's color */
   color: string;
 }
 
-export type LineCmpProps = SelfProps & Pick<Scales, 'xScale' | 'yScale'>;
+/** All Line's Props */
+export type LineCmpProps = LineSelfProps & Pick<Scales, 'xScale' | 'yScale'>;
 
+/** Line Component */
 export const Line: React.FC<LineCmpProps> = ({
   color,
   coordinates,
