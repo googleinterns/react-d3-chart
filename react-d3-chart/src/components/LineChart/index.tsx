@@ -29,6 +29,8 @@ interface SelfProps {
   contextHeight?: number;
   viewMode?: 'overlapped' | 'stacked';
   selectionCallback?: (selection: RangeSelectionState['selection']) => void;
+  yDomainPadding?: number;
+  maxContextPoints?: number;
 }
 
 export type LineChartProps = SelfProps &
@@ -58,14 +60,26 @@ export const LineChart: React.FC<LineChartProps> = ({
   viewMode = 'overlapped',
   color = DEFAULT_COLOR,
   maxPoints = 150,
+  maxContextPoints = 1000,
   selectionCallback,
   tooltipEntryHeight,
+  yDomainPadding = 50,
 }) => {
   const [mode, setMode] = useState<ModeTypes>('intersection');
-  const { derivedXDomain, derivedYDomain } = useMemo(
-    () => getDomain(xDomain, yDomain, data),
-    [xDomain, yDomain, data]
-  );
+  const { derivedXDomain, derivedYDomain } = useMemo(() => {
+    const { derivedXDomain, derivedYDomain } = getDomain(
+      xDomain,
+      yDomain,
+      data
+    );
+    return {
+      derivedXDomain,
+      derivedYDomain: [
+        derivedYDomain[0] - yDomainPadding,
+        derivedYDomain[1] + yDomainPadding,
+      ],
+    };
+  }, [xDomain, yDomain, data]);
   const [tooltipState, setTooltipState] = useState<TooltipState>({
     enabled: false,
     xOffset: 0,
@@ -127,10 +141,12 @@ export const LineChart: React.FC<LineChartProps> = ({
 
   const domainFilteredData = filterDomain(data, selectedDomain);
   const filteredData = downSample(domainFilteredData, maxPoints);
+  const contextData = useMemo(() => downSample(data, maxContextPoints), [data]);
 
   const getChart = (
     data: CommonProps['data'],
     filteredData: CommonProps['data'],
+    contextData: CommonProps['data'],
     index: number
   ) => (
     <div key={`linechart-container-${index}`}>
@@ -139,6 +155,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         height={height}
         data={data}
         filteredData={filteredData}
+        contextData={contextData}
         margin={margin}
         contextHeight={contextHeight}
         color={color}
@@ -168,10 +185,11 @@ export const LineChart: React.FC<LineChartProps> = ({
 
   return (
     <LineChartContainer>
-      {viewMode === 'overlapped' && getChart(data, filteredData, 0)}
+      {viewMode === 'overlapped' &&
+        getChart(data, filteredData, contextData, 0)}
       {viewMode === 'stacked' &&
         filteredData.map((line, index) =>
-          getChart([data[index]], [line], index)
+          getChart([data[index]], [line], [contextData[index]], index)
         )}
     </LineChartContainer>
   );

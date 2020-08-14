@@ -20,6 +20,7 @@ const CONTEXT_HEIGHT = 40;
 
 interface SelfProps {
   filteredData: Array<LineProps>;
+  contextData: Array<LineProps>;
   lineClassName?: string;
   contextHeight?: number;
   tooltipState: TooltipState;
@@ -42,6 +43,7 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
   height,
   data,
   filteredData,
+  contextData,
   margin,
   contextHeight = CONTEXT_HEIGHT,
   color = DEFAULT_COLOR,
@@ -162,7 +164,7 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
         height={contextHeight}
         xScaleContext={xScaleContext}
         yScaleContext={yScaleContext}
-        data={data}
+        data={contextData}
         onBrush={setDomainState}
         graphIndex={graphIndex}
         domainState={domainState}
