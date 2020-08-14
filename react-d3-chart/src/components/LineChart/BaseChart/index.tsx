@@ -1,43 +1,53 @@
+// BaseChart Component
+/**
+ * File containing the BaseChart Wrapped by the LineChart component
+ * @packageDocumentation
+ */
 import React, { useState, useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import Axis from '../../Axis';
 import {
   LineProps,
   Dimensions,
-  TooltipState,
-  DomainState,
   Scales,
   CommonProps,
-  ModeTypes,
-  RangeSelectionState,
+  TooltipStateManagement,
+  RangeSelectionStateManagement,
+  DomainStateManagement,
+  ModeTypeStateManagement,
 } from '../../../types';
 import Overlay from '../..//Overlay';
 import Context from '../../Context';
-import LineContainer from '../../Lines';
+import LineContainer from '../../LineContainer';
 import { DEFAULT_COLOR } from '../../../theme';
 
 const CONTEXT_HEIGHT = 40;
 
-interface SelfProps {
+/** BaseChart's own props */
+export interface BaseChartSelfProps {
+  /** Data points to be rendered as lines in the main graph*/
   filteredData: Array<LineProps>;
+  /** Data points to be rendered as lines in the context */
   contextData: Array<LineProps>;
-  lineClassName?: string;
-  contextHeight?: number;
-  tooltipState: TooltipState;
-  setTooltipState: (tooltipState: TooltipState) => void;
-  rangeSelectionState: RangeSelectionState;
-  setRangeSelectionState: (rangeSelectionState: RangeSelectionState) => void;
-  domainState: DomainState;
-  setDomainState: (domainState: DomainState) => void;
-  mode?: ModeTypes;
 }
 
-export type BaseLineChartProps = SelfProps &
+/** All BaseLineChart's Props */
+export type BaseLineChartProps = BaseChartSelfProps &
+  DomainStateManagement &
+  TooltipStateManagement &
+  RangeSelectionStateManagement &
   Dimensions &
   Scales &
-  Partial<Pick<CommonProps, 'color' | 'graphIndex' | 'tooltipEntryHeight'>> &
-  Pick<CommonProps, 'data'>;
+  Partial<
+    Pick<
+      CommonProps,
+      'color' | 'graphIndex' | 'tooltipEntryHeight' | 'contextHeight'
+    >
+  > &
+  Pick<CommonProps, 'data'> &
+  Pick<ModeTypeStateManagement, 'mode'>;
 
+/** BaseLineChart Component */
 export const BaseChart: React.FC<BaseLineChartProps> = ({
   width,
   height,

@@ -1,15 +1,26 @@
+// Axis Component
+/**
+ * Component to render an Axis for a graph
+ * @packageDocumentation
+ */
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Text } from './styles';
 
 export interface AxisProps {
+  /** Scale to be used for the axis */
   scale: d3.ScaleLinear<number, number>;
+  /** Position to render the Axis */
   type: 'Top' | 'Right' | 'Bottom' | 'Left';
+  /** Axis x offset from the left side of the graph */
   x: number;
+  /** Axis y offset form the bottom of the graph */
   y: number;
+  /** Axis label */
   label?: string;
 }
 
+/** Axis Component */
 export const Axis: React.FC<AxisProps> = ({ x, y, label, scale, type }) => {
   const gRef = useRef<SVGGElement>();
 

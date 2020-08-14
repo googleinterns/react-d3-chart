@@ -1,9 +1,14 @@
+// Context Component
+/**
+ * Component to render the graph context displayed below each graph
+ * @packageDocumentation
+ */
 import React, { useMemo, useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import {
   Dimensions,
   Margin,
-  DomainState,
+  DomainStateManagement,
   Scales,
   CommonProps,
 } from '../../types';
@@ -11,23 +16,26 @@ import Axis from '../Axis';
 import Line from '../Line';
 import { DEFAULT_COLOR } from '../../theme';
 
-interface SelfProps {
-  graphHeight: number;
-  onBrush: (domainState: DomainState) => void;
-  domainState: DomainState;
-}
-
 interface State {
   brushRef: SVGGElement;
   brushState: { brush: d3.BrushBehavior<unknown> };
 }
 
-export type ContextProps = SelfProps &
+/** Context's own props */
+export interface ContextSelfProps {
+  /** callback that triggers on context brush */
+  onBrush: DomainStateManagement['setDomainState'];
+}
+
+/** All Context's Props */
+export type ContextProps = ContextSelfProps &
+  Pick<DomainStateManagement, 'domainState'> &
   Dimensions &
   Pick<Scales, 'xScaleContext' | 'yScaleContext'> &
   Partial<Pick<CommonProps, 'color' | 'graphIndex'>> &
-  Pick<CommonProps, 'data'>;
+  Pick<CommonProps, 'data' | 'graphHeight'>;
 
+/** Context Component */
 export const Context: React.FC<ContextProps> = ({
   margin,
   height,

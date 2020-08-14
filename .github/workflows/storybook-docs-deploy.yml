@@ -1,0 +1,30 @@
+name: Build and Deploy Docs and Storybook
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          working-directory: ./react-d3-chart
+      - uses: actions/setup-node@master
+        with:
+          working-directory: ./react-d3-chart
+      - name: Install Yarn
+        working-directory: ./react-d3-chart
+        run: |
+          yarn install
+      - name: Build Storybook
+        working-directory: ./react-d3-chart
+        run: |
+          yarn build-storybook
+      - name: Add No Jekyll
+        working-directory: ./react-d3-chart/storybook-static
+        run: |
+          touch .nojekyll
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.5.9
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: react-d3-chart/storybook-static # The folder the action should deploy.

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import * as d3 from 'd3';
 import {
   Dimensions,
-  RangeSelectionState,
+  RangeSelectionStateManagement,
   Scales,
   CommonProps,
 } from '../../types';
@@ -14,12 +14,12 @@ interface State {
 }
 
 interface SelfProps {
-  onBrush: (rangeSelectionState: RangeSelectionState) => void;
+  onBrush: RangeSelectionStateManagement['setRangeSelectionState'];
 }
 
 type RangeSelectionProps = SelfProps &
   Pick<Dimensions, 'width' | 'height'> &
-  RangeSelectionState &
+  RangeSelectionStateManagement['rangeSelectionState'] &
   Pick<Scales, 'xScale'> &
   Partial<Pick<CommonProps, 'graphIndex'>>;
 

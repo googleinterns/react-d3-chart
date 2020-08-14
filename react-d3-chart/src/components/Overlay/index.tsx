@@ -1,31 +1,32 @@
+// Overlay Component
+/**
+ * File containing the Overlay Component that is the wrapper around
+ * cursor interaction with the graph
+ * @packageDocumentation
+ */
 import React from 'react';
 import * as d3 from 'd3';
 import _ from 'lodash';
 import {
   Dimensions,
-  TooltipState,
   Scales,
   CommonProps,
-  ModeTypes,
-  RangeSelectionState,
+  TooltipStateManagement,
+  ModeTypeStateManagement,
+  RangeSelectionStateManagement,
 } from '../../types';
 import Bisector from '../Bisector';
 import RangeSelection from '../RangeSelection';
 import { ScannerRect } from './styles';
 import { DEFAULT_COLOR } from '../../theme';
 
-interface SelfProps {
-  tooltipState: TooltipState;
-  setTooltipState: (tooltipState: TooltipState) => void;
-  mode: ModeTypes;
-  rangeSelectionState: RangeSelectionState;
-  setRangeSelectionState: (rangeSelectionState: RangeSelectionState) => void;
-}
-
-export type OverlayProps = SelfProps &
+/** All Overlay's Props */
+export type OverlayProps = RangeSelectionStateManagement &
+  TooltipStateManagement &
   Dimensions &
   Pick<Scales, 'xScale'> &
   Partial<Pick<CommonProps, 'color' | 'graphIndex' | 'tooltipEntryHeight'>> &
+  Pick<ModeTypeStateManagement, 'mode'> &
   Pick<CommonProps, 'data'>;
 
 export const Overlay: React.FC<OverlayProps> = ({
