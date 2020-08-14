@@ -34,7 +34,7 @@ interface SelfProps {
 export type BaseLineChartProps = SelfProps &
   Dimensions &
   Scales &
-  Partial<Pick<CommonProps, 'color' | 'graphIndex'>> &
+  Partial<Pick<CommonProps, 'color' | 'graphIndex' | 'tooltipEntryHeight'>> &
   Pick<CommonProps, 'data'>;
 
 export const BaseChart: React.FC<BaseLineChartProps> = ({
@@ -57,6 +57,7 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
   domainState,
   setDomainState,
   mode = 'intersection',
+  tooltipEntryHeight,
 }) => {
   const svgRef = useRef<SVGGElement>();
   const [zoomState, setZoomState] = useState<{
@@ -151,6 +152,7 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
           setRangeSelectionState={setRangeSelectionState}
           color={color}
           mode={mode}
+          tooltipEntryHeight={tooltipEntryHeight}
         />
       </g>
       <Context

@@ -44,6 +44,7 @@ export interface Scales {
 
 export interface CommonProps {
   color: d3.ScaleOrdinal<string, string>;
+  tooltipEntryHeight: number;
   graphIndex: number;
   graphWidth: number;
   maxPoints: number;

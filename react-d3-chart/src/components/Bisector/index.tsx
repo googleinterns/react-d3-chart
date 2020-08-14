@@ -5,7 +5,7 @@ import { TooltipState, CommonProps, Dimensions } from '../../types';
 import { DEFAULT_COLOR } from '../../theme';
 
 interface SelfProps {
-  tooltipHeight?: number;
+  tooltipEntryHeight?: number;
   tooltipWidth?: number;
   tooltipState: TooltipState;
 }
@@ -19,8 +19,8 @@ export const Bisector: React.FC<BisectorProps> = ({
   tooltipState,
   data,
   height,
-  tooltipHeight = 140,
-  tooltipWidth = 90,
+  tooltipEntryHeight = 15,
+  tooltipWidth = 120,
   graphIndex = 0,
   graphWidth,
   color = DEFAULT_COLOR,
@@ -34,7 +34,7 @@ export const Bisector: React.FC<BisectorProps> = ({
         x={xScaled}
         xOffset={xOffset}
         width={tooltipWidth}
-        height={tooltipHeight}
+        height={tooltipEntryHeight * data.length + 25}
         graphIndex={graphIndex}
         graphWidth={graphWidth}
         color={color}

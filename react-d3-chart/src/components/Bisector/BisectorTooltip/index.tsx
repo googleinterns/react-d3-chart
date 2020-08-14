@@ -36,6 +36,12 @@ export const BisectorTooltip: React.FC<BisectorTooltipProps> = ({
       : xOffset - TOOLTIP_X_OFFSET - width;
   const tooltipEntries = data.map((line, entryIndex) => {
     const coordX = bisect(line, x);
+    let yVal;
+    if (coordX >= line.length) {
+      yVal = 'N/A';
+    } else {
+      yVal = line[coordX].y;
+    }
     return (
       <tspan
         x={5}
@@ -43,7 +49,7 @@ export const BisectorTooltip: React.FC<BisectorTooltipProps> = ({
         fill={color((entryIndex + graphIndex).toString())}
         key={`entry${entryIndex}`}
       >
-        {`Trace ${entryIndex + graphIndex + 1}: ${line[coordX].y}`}
+        {`Trace ${entryIndex + graphIndex + 1}: ${yVal}`}
       </tspan>
     );
   });
