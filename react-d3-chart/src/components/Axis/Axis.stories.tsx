@@ -20,3 +20,12 @@ storiesOf('Axis', module).add('Bottom', () => (
     </g>
   </svg>
 ));
+
+storiesOf('Axis', module).add('two axies', () => (
+    <svg width={500} height={500}>
+      <g transform={`translate(${50}, ${50})`}>
+        <Axis x={0} y={0} scale={yScale} type="Left" />
+        <Axis x={0} y={0} scale={xScale} type="Bottom" />
+      </g>
+    </svg>
+));
