@@ -10,7 +10,7 @@ Install `react-d3-chart` using npm or yarn.
 
 ## Storybook
 
-React components can be viewed in storybook [here](https://googleinterns.github.io/react-d3-chart/)
+React components can be viewed in storybook [here](https://googleinterns.github.io/react-d3-chart/index.html)
 
 ## Components
 
