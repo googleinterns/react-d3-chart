@@ -96,3 +96,21 @@ export const getDomain = (
   }
   return { derivedXDomain, derivedYDomain };
 };
+
+/**
+ * Get matrix domain
+ * @param matrix
+ * @returns [min, max]
+ */
+export const getMatrixDomain = (matrix : Array<Array<number>>) => {
+  let min = Infinity;
+  let max = -Infinity;
+
+  matrix.forEach(subArray => {
+    subArray.forEach(num => {
+      min = Math.min(num, min);
+      max = Math.max(num, max);
+    })
+  });
+  return [min, max]
+};
