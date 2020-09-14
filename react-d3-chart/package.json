@@ -1,6 +1,6 @@
 {
   "name": "d3-react-chart",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "main": "./dist/js/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/js/index.d.ts",
