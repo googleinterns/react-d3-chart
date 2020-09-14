@@ -63,7 +63,7 @@ export const Scroller: React.FC<ScrollerProps> = (
   useEffect(() => {
     if (brushRef.current) {
       const brushContainer = d3.select(brushRef.current);
-      let brush;
+      let brush : d3.BrushBehavior<any>;
       if (position === 'Left') {
         brush = d3.brushY().extent([
           [0, 0],
