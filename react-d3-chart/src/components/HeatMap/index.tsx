@@ -10,6 +10,7 @@ import Tooltip, {TooltipState} from '../Tooltip';
 import Scroller from '../Scroller';
 
 import {Margin} from '../../types';
+import {getMatrixDomain} from '../../utils';
 
 interface HeatMapProps {
   width?: number,
@@ -43,6 +44,11 @@ export const HeatMap: React.FC<HeatMapProps> = (
           .padding(0.01),
       [width, xLabels, selectedXRange]
   );
+  const yLabelScale = d3.scaleBand()
+      .range([height, 0])
+      .domain(yLabels)
+      .padding(0.01);
+
   const yScale = d3.scaleBand()
       .range([height, 0])
       .domain(yLabels.slice(Math.round(selectedYRange[0] - 0.5), Math.round(selectedYRange[1] + 0.5)))
@@ -58,13 +64,13 @@ export const HeatMap: React.FC<HeatMapProps> = (
       [width, yLabels]
   );
 
-  const onMouseOver = (e: React.MouseEvent<SVGRectElement, MouseEvent>, selectedIndex: Array<number>) => {
+  const onMouseOver = (e: React.MouseEvent<SVGRectElement, MouseEvent>, matrixIndex: Array<number>) => {
     const mouse = d3.clientPoint(e.target as d3.ContainerElement, e);
     const mouseX = Math.round(mouse[0]);
     const mouseY = Math.round(mouse[1]);
-    const value = matrix[selectedIndex[0]][selectedIndex[1]];
-    setHoveredIndex(selectedIndex);
-    setTooltipState({xOffset: mouseX + margin.left, yOffset: mouseY + margin.top, visible: true, content: value });
+    const value = matrix[matrixIndex[0]][matrixIndex[1]];
+    setHoveredIndex(matrixIndex);
+    setTooltipState({xOffset: mouseX + margin.left, yOffset: mouseY + margin.top, visible: true, content: `${value}` });
   };
 
   const onMouseOut = () =>
@@ -72,10 +78,10 @@ export const HeatMap: React.FC<HeatMapProps> = (
 
   const margin = {top: 50, left: 50, right: 50, bottom: 50};
 
-  const myColor = d3.scaleLinear()
+  const myColor = useMemo(() => d3.scaleLinear()
       // @ts-ignore
       .range(['white', '#69b3a2'])
-      .domain([1, 10000]); // TODO: make a function for calculating domain from a matrix. useMemo on this
+      .domain(getMatrixDomain(matrix)), [matrix]);
 
   const leftScrollerMargin: Margin = {
     top: margin.top,
@@ -91,16 +97,15 @@ export const HeatMap: React.FC<HeatMapProps> = (
     left: scrollerSize + leftScrollerMargin.left + leftScrollerMargin.right
   };
 
-
   const renderGrids = useMemo(() => {
-    return yLabels.map((yLabel, yi) => (
-        <React.Fragment key={yLabel}>{xLabels.map((xLabel, xi) => {
+    return yScale.domain().map((yLabel, yi) => (
+        <React.Fragment key={yLabel}>{xScale.domain().map((xLabel, xi) => {
           const style = {'fill': `${myColor(matrix[yi][xi])}`};
           if (hoveredIndex[0] == yi && hoveredIndex[1] == xi) {
             style['stroke'] = 'black';
           }
           return (
-              <rect key={xLabel}
+              <rect key={`${xLabel}, ${xi}`}
                     width={xScale.bandwidth()}
                     height={yScale.bandwidth()}
                     x={xScale(xLabel)}
@@ -124,7 +129,7 @@ export const HeatMap: React.FC<HeatMapProps> = (
           <Axis x={0} y={height} scale={xScale} type="Bottom" totalPoints={25}/>
         </g>
         <Scroller margin={leftScrollerMargin} width={scrollerSize} height={height}
-                  position="Left" scale={yScaleContext} showAxis={false}
+                  position="Left" scale={yScaleContext} showAxis={false} labelAxis={yLabelScale}
                   onBrush={setSelectedYRange}/>
 
         <Scroller margin={bottomScrollerMargin} width={width} height={scrollerSize}

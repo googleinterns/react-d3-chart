@@ -21,6 +21,7 @@ interface ScrollerProps {
   position: 'Bottom' | 'Left';
   showAxis: boolean;
   onBrush?: (newDomain: Array<number>) => void;
+  labelAxis?: d3.ScaleBand<any>;
 }
 
 export const Scroller: React.FC<ScrollerProps> = (
@@ -30,7 +31,8 @@ export const Scroller: React.FC<ScrollerProps> = (
       scale,
       position,
       onBrush,
-      showAxis = true
+      showAxis = true,
+      labelAxis,
     }: ScrollerProps
 ) => {
   const brushRef = useRef<State['brushRef']>();
@@ -46,7 +48,13 @@ export const Scroller: React.FC<ScrollerProps> = (
     }
     const s = d3.event.selection || scale.range();
 
-    const newGraphDomain = s.map(scale.invert, scale);
+    let newGraphDomain = s.map(scale.invert, scale);
+    if(position === 'Left') {
+      const oldDomain = scale.domain();
+      const [L, R] = oldDomain;
+      newGraphDomain = [L + R - newGraphDomain[1], R - L - newGraphDomain[0]]; // invert the domain
+    }
+
     if (onBrush) {
       onBrush(newGraphDomain);
     }
@@ -97,6 +105,7 @@ export const Scroller: React.FC<ScrollerProps> = (
       width={width}
       height={height}
   >
+    {labelAxis && <Axis x={xPos} y={yPos} scale={labelAxis} type={position}/>}
     {showAxis && <Axis x={xPos} y={yPos} scale={scale} type={position}/>}
   </g>)
 };
