@@ -102,6 +102,7 @@ export const HeatMap: React.FC<HeatMapProps> = (
         <React.Fragment key={yLabel}>{xScale.domain().map((xLabel, xi) => {
           const style = {'fill': `${myColor(matrix[yi][xi])}`};
           if (hoveredIndex[0] == yi && hoveredIndex[1] == xi) {
+            // @ts-ignore
             style['stroke'] = 'black';
           }
           return (
