@@ -54,6 +54,7 @@ export const Scroller: React.FC<ScrollerProps> = (
       const [L, R] = oldDomain;
       newGraphDomain = [L + R - newGraphDomain[1], R - L - newGraphDomain[0]]; // invert the domain
     }
+    newGraphDomain = [Math.floor(newGraphDomain[0]), Math.ceil(newGraphDomain[1])];
 
     if (onBrush) {
       onBrush(newGraphDomain);
