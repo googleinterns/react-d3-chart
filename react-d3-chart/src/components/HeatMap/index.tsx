@@ -40,7 +40,7 @@ export const HeatMap: React.FC<HeatMapProps> = (
   const xScale = useMemo(
       () => d3.scaleBand()
           .range([0, width])
-          .domain(xLabels.slice(Math.round(selectedXRange[0] - 0.5), Math.round(selectedXRange[1] + 0.5)))
+          .domain(xLabels.slice(selectedXRange[0], selectedXRange[1]))
           .padding(0.01),
       [width, xLabels, selectedXRange]
   );
@@ -98,8 +98,12 @@ export const HeatMap: React.FC<HeatMapProps> = (
   };
 
   const renderGrids = useMemo(() => {
-    return yScale.domain().map((yLabel, yi) => (
-        <React.Fragment key={yLabel}>{xScale.domain().map((xLabel, xi) => {
+    return yScale.domain().map((yLabel, _yi) => (
+        <React.Fragment key={yLabel}>{xScale.domain().map((xLabel, _xi) => {
+
+          const xi = _xi + selectedXRange[0];
+          const yi = _yi + selectedYRange[0];
+
           const style = {'fill': `${myColor(matrix[yi][xi])}`};
           if (hoveredIndex[0] == yi && hoveredIndex[1] == xi) {
             // @ts-ignore
