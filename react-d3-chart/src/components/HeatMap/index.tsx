@@ -3,7 +3,7 @@
  * Component to render an HeatMap
  * @packageDocumentation
  */
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import * as d3 from 'd3';
 import {Select, MenuItem} from '@material-ui/core';
 
@@ -28,7 +28,11 @@ interface HeatMapProps {
 
 const scrollerSize = 40;
 
-const colorSchemes = {
+interface ColorSchemeOptions {
+  [key: string] : (t:number) => string
+}
+
+const colorSchemes : ColorSchemeOptions = {
   'interpolateTurbo': d3.interpolateTurbo,
   'interpolateOrRd': d3.interpolateOrRd,
   'interpolateYlOrRd': d3.interpolateYlOrRd,

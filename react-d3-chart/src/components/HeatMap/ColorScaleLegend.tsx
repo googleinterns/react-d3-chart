@@ -30,11 +30,11 @@ export const ColorScaleLegend: React.FC<ColorScaleLegendProps> = (
       .domain(domain),
       [colorScheme, domain]);
 
-  const xLabels = useMemo(() => {
+  const xLabels : Array<number> = useMemo(() => {
     const inc = (domain[1] - domain[0]) / (width);
     const ret = [];
     for (let label = domain[0]; label < domain[1]; label += inc) {
-      ret.push(label.toFixed(2));
+      ret.push(parseFloat(label.toFixed(2)));
     }
     return ret;
   }, [width, domain]);
