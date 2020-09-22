@@ -1,0 +1,92 @@
+{
+  "name": "d3-react-chart",
+  "version": "0.1.14",
+  "main": "./dist/js/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/js/index.d.ts",
+  "author": "Craig Lewis <craigericlewis@gmail.com>",
+  "license": "Apache-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "tag": "prerelease"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "d3": "^5.16.0",
+    "lodash": "^4.17.20",
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "build:lib": "./node_modules/yarn/bin/yarn build:babel && ./node_modules/yarn/bin/yarn build:types && node ./scripts/copyTS.js",
+    "build:babel": "concurrently \"./node_modules/yarn/bin/yarn build:babel:esm && ./node_modules/yarn/bin/yarn build:babel:umd\" \"./node_modules/yarn/bin/yarn build:babel:cjs\"",
+    "build:babel:cjs": "cross-env BABEL_ENV=cjs babel --source-maps --extensions \".js,.ts,.tsx\" src --out-dir dist/js --presets=@babel/env --ignore **/*.spec.ts,**/*.test.ts,**/*.stories.js",
+    "build:babel:esm": "cross-env BABEL_ENV=esm babel --source-maps --extensions \".js,.ts,.tsx\" src --out-dir dist/esm --ignore **/*.spec.ts,**/*.test.ts,**/*.stories.js",
+    "build:babel:umd": "cross-env BABEL_ENV=umd babel --source-maps --extensions \".js\" dist/esm --out-dir dist/umd --plugins=transform-es2015-modules-umd --ignore **/*.spec.ts,**/*.test.ts,**/*.stories.js",
+    "build:types": "tsc -p tsconfig.gen-dts.json",
+    "clean": "rimraf dist",
+    "develop": "./node_modules/yarn/bin/yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public && typedoc",
+    "deploy-storybook": "build-storybook && storybook-to-ghpages --existing-output-dir=.storybook-static",
+    "cypress:open": "cypress open"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/plugin-proposal-export-default-from": "^7.10.4",
+    "@storybook/addon-actions": "^6.0.0-rc.13",
+    "@storybook/addon-docs": "^6.0.0-rc.13",
+    "@storybook/addon-info": "^6.0.0-alpha.2",
+    "@storybook/addon-links": "^6.0.0-rc.13",
+    "@storybook/addons": "^6.0.0-rc.13",
+    "@storybook/preset-create-react-app": "^3.1.4",
+    "@storybook/react": "^6.0.0-rc.13",
+    "@storybook/storybook-deployer": "^2.8.6",
+    "@types/d3": "^5.7.2",
+    "@types/lodash": "^4.14.159",
+    "@types/node": "^14.0.27",
+    "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
+    "@types/styled-components": "^5.1.1",
+    "@types/victory": "^33.1.4",
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "babel-plugin-typescript-to-proptypes": "^1.4.0",
+    "concurrently": "^5.2.0",
+    "cross-env": "^7.0.2",
+    "cypress": "^4.12.1",
+    "typedoc": "^0.18.0",
+    "typescript": "^3.9.7",
+    "yarn": "^1.22.4"
+  },
+  "repository": {
+    "url": "https://github.com/googleinterns/react-d3-chart",
+    "type": "git"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
