@@ -102,7 +102,7 @@ export const getDomain = (
  * @param matrix
  * @returns [min, max]
  */
-export const getMatrixDomain = (matrix : Array<Array<number>>) => {
+export const getMatrixDomain = (matrix : Array<Array<number>>) : [number, number] => {
   let min = Infinity;
   let max = -Infinity;
 
