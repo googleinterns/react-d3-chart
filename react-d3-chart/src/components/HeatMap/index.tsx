@@ -5,12 +5,18 @@
  */
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import * as d3 from 'd3';
+import {Select, MenuItem} from '@material-ui/core';
+
 import Axis from '../Axis';
 import Tooltip, {TooltipState} from '../Tooltip';
 import Scroller from '../Scroller';
+import ColorScaleLegend from './ColorScaleLegend';
+import FlexRow from '../FlexContainers/FlexRow';
+import FlexColumn from '../FlexContainers/FlexColumn';
 
 import {Margin} from '../../types';
 import {getMatrixDomain} from '../../utils';
+
 
 interface HeatMapProps {
   width?: number,
@@ -21,6 +27,15 @@ interface HeatMapProps {
 }
 
 const scrollerSize = 40;
+
+const colorSchemes = {
+  'interpolateTurbo': d3.interpolateTurbo,
+  'interpolateOrRd': d3.interpolateOrRd,
+  'interpolateYlOrRd': d3.interpolateYlOrRd,
+  'interpolateGreys': d3.interpolateGreys,
+  'interpolateBuGn': d3.interpolateBuGn,
+};
+
 
 /** HeatMap Component */
 export const HeatMap: React.FC<HeatMapProps> = (
@@ -33,9 +48,10 @@ export const HeatMap: React.FC<HeatMapProps> = (
   const [selectedXRange, setSelectedXRange] = useState([0, xLabels.length]);
   const [selectedYRange, setSelectedYRange] = useState([0, yLabels.length]);
   const [toolTipState, setTooltipState] = useState<TooltipState>({
-    content: '', visible:false, xOffset: 200, yOffset:200
+    content: '', visible: false, xOffset: 200, yOffset: 200
   });
   const [hoveredIndex, setHoveredIndex] = useState([-1, -1]);
+  const [colorScheme, setColorScheme] = useState('interpolateTurbo');
 
   const xScale = useMemo(
       () => d3.scaleBand()
@@ -70,18 +86,23 @@ export const HeatMap: React.FC<HeatMapProps> = (
     const mouseY = Math.round(mouse[1]);
     const value = matrix[matrixIndex[0]][matrixIndex[1]];
     setHoveredIndex(matrixIndex);
-    setTooltipState({xOffset: mouseX + margin.left, yOffset: mouseY + margin.top, visible: true, content: `${value}` });
+    setTooltipState({
+      xOffset: mouseX + margin.left,
+      yOffset: mouseY + margin.top,
+      visible: true,
+      content: `${value}`
+    });
   };
 
   const onMouseOut = () =>
-      setTooltipState({ ...toolTipState, visible: false });
+      setTooltipState({...toolTipState, visible: false});
 
   const margin = {top: 50, left: 50, right: 50, bottom: 50};
 
-  const myColor = useMemo(() => d3.scaleLinear()
-      // @ts-ignore
-      .range(['white', '#69b3a2'])
-      .domain(getMatrixDomain(matrix)), [matrix]);
+  const myColor = useMemo(() => d3.scaleSequential(colorSchemes[colorScheme])
+      .domain(getMatrixDomain(matrix)),
+      [matrix, colorScheme]);
+
 
   const leftScrollerMargin: Margin = {
     top: margin.top,
@@ -124,24 +145,45 @@ export const HeatMap: React.FC<HeatMapProps> = (
   }, [xScale, yScale, hoveredIndex]);
 
   return (
-      <svg
-          width={width + margin.left + margin.right + scrollerSize + leftScrollerMargin.left + leftScrollerMargin.right}
-          height={height + margin.top + margin.bottom + scrollerSize + bottomScrollerMargin.bottom}
-      >
-        <g transform={`translate(${scrollerSize + leftScrollerMargin.left + leftScrollerMargin.right}, ${margin.top})`} ref={svgRef}>
-          {renderGrids}
-          <Axis x={0} y={0} scale={yScale} type="Left"/>
-          <Axis x={0} y={height} scale={xScale} type="Bottom" totalPoints={25}/>
-        </g>
-        <Scroller margin={leftScrollerMargin} width={scrollerSize} height={height}
-                  position="Left" scale={yScaleContext} showAxis={false} labelAxis={yLabelScale}
-                  onBrush={setSelectedYRange}/>
+      <FlexRow>
+        <FlexColumn className="control-pane">
+          <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={colorScheme}
+              onChange={(e) => {setColorScheme(`${e.target.value}`)}}
+          >
+            {Object.keys(colorSchemes).map((k) => <MenuItem value={k} key={k}>{k}</MenuItem>)}
+          </Select>
+          <ColorScaleLegend domain={getMatrixDomain(matrix)} colorScheme={colorSchemes[colorScheme]} width={width-200}/>
+        </FlexColumn>
+        <FlexColumn>
+          <svg
+              width={width + margin.left + margin.right + scrollerSize + leftScrollerMargin.left + leftScrollerMargin.right}
+              height={height + margin.top + margin.bottom + scrollerSize + bottomScrollerMargin.bottom}
+          >
+            <g transform={`translate(${scrollerSize + leftScrollerMargin.left + leftScrollerMargin.right}, ${margin.top})`}
+               ref={svgRef}>
+              {renderGrids}
+              <Axis x={0} y={0} scale={yScale} type="Left"/>
+              <Axis x={0} y={height} scale={xScale} type="Bottom"
+                    totalPoints={25}/>
+            </g>
+            <Scroller margin={leftScrollerMargin} width={scrollerSize}
+                      height={height}
+                      position="Left" scale={yScaleContext} showAxis={false}
+                      labelAxis={yLabelScale}
+                      onBrush={setSelectedYRange}/>
 
-        <Scroller margin={bottomScrollerMargin} width={width} height={scrollerSize}
-               position="Bottom" scale={xScaleContext} showAxis={true}
-               onBrush={setSelectedXRange}/>
-        <Tooltip {...toolTipState} width={100} height={100} graphWidth={width}/>
-      </svg>
+            <Scroller margin={bottomScrollerMargin} width={width}
+                      height={scrollerSize}
+                      position="Bottom" scale={xScaleContext} showAxis={true}
+                      onBrush={setSelectedXRange}/>
+            <Tooltip {...toolTipState} width={100} height={100}
+                     graphWidth={width}/>
+          </svg>
+        </FlexColumn>
+      </FlexRow>
   );
 };
 

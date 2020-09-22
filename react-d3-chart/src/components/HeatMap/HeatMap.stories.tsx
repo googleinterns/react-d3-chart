@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 const xLabels = Array.from(Array(255).keys());
 const yLabels = ["A", "B", "C", "D"];
 const matrix = [
-    xLabels.map((e,i) => -255),
+    xLabels.map((e,i) => 0),
     xLabels.map((e,i) => -i),
     xLabels.map((e,i) => i),
     xLabels.map((e, i) => Math.floor(Math.random() * 100) + 1)
