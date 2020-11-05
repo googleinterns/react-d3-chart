@@ -7,12 +7,18 @@
 /** Data points for each line in the line chart*/
 export type LineProps = Array<Coordinate>;
 
-/** Available modes for the cursor for each graph.
+/**
+ * Available modes for the cursor for each graph.
  *  - Selection: Allows the user to brush a subdomain of the graph
- *  - Intersection: Attempts to intersect every line and display the representative
- *    y value based on the current x position of the mouse
+ *  - Intersection: Attempts to intersect every line and display the
+ * representative y value based on the current x position of the mouse
  */
-export type ModeTypes = 'selection' | 'intersection';
+export type ModeTypes = 'selection'|'intersection';
+
+/**
+ * Range Selection, an array of two numbers indicating the start and end index
+ */
+export type TRangeSelection = [number, number];
 
 export interface ModeTypeStateManagement {
   /** Current selected cursor mode */
@@ -51,7 +57,8 @@ export interface Margin {
 export interface TooltipState {
   /** Cursor tooltip x offset from the left side of the chart in pixels */
   xOffset: number;
-  /** Scaled x value of the cursor to represent current x position of the domain
+  /**
+   * Scaled x value of the cursor to represent current x position of the domain
    * that the cursor is hovering over
    */
   xScaled: number;
@@ -69,7 +76,8 @@ export interface TooltipStateManagement {
 export interface RangeSelectionState {
   /** Current x range selected of a graph's domain */
   selection: [number, number];
-  /** Used in stacked mode to determine source of the change in selection
+  /**
+   * Used in stacked mode to determine source of the change in selection
    * to prevent recursive updates to the current selection
    */
   eventSource: string;
@@ -83,7 +91,8 @@ export interface RangeSelectionStateManagement {
 export interface DomainState {
   /** Currently selected domain visible for all graphs under this component */
   selectedDomain: [number, number];
-  /** Used in stacked mode to determine source of the change in graph domain
+  /**
+   * Used in stacked mode to determine source of the change in graph domain
    * to prevent recursive updates to the currently selected graph domain
    */
   eventSource: string;
@@ -120,7 +129,9 @@ export interface CommonProps {
   graphWidth: number;
   /** Height of the parent graph component in pixels */
   graphHeight: number;
-  /** Maximum number of points that can be rendered per line in the each graph */
+  /**
+   * Maximum number of points that can be rendered per line in the each graph
+   */
   maxPoints: number;
   /** Original data points to be rendered in the graph */
   data: Array<LineProps>;
@@ -129,12 +140,14 @@ export interface CommonProps {
 }
 
 export interface Domains {
-  /** Specified maximum x domain of all graphs under the parent component
+  /**
+   * Specified maximum x domain of all graphs under the parent component
    * - xDomain[0] is the lower x bound
    * - xDomain[1] is the upper x bound
    */
   xDomain: [number, number];
-  /** Specified maximum y domain of all graphs under the parent component
+  /**
+   * Specified maximum y domain of all graphs under the parent component
    * - yDomain[0] is the lower y bound
    * - yDomain[1] is the upper y bound
    */
