@@ -47,18 +47,15 @@ const ModeSelectionContainer: React.FC<Props> = ({
     onConfirmSelection(selection);
     setRangeSelectionState({
       selection: [0, 0],
-      eventSource: 'reset'
     });
   };
 
   const removeSelection = (selection: TRangeSelection) => {
     const newRangeSelections = rangeSelections.filter(
       range => range[0] !== selection[0]
-      && range[1]!==selection[1]
+      && range[1] !== selection[1]
     );
-
     setRangeSelections(newRangeSelections);
-
   }
 
   return (
@@ -94,7 +91,7 @@ const ModeSelectionContainer: React.FC<Props> = ({
             <span>{Math.round(range[0])}, {Math.round(range[1])}</span>
             <span style={{cursor:'pointer'}}
                   onClick={() => removeSelection(range)}>
-                    &#128465;
+                    &#128465; {/* trash can icon */}
             </span>
           </FlexColumn>
         )

@@ -80,7 +80,7 @@ export interface RangeSelectionState {
    * Used in stacked mode to determine source of the change in selection
    * to prevent recursive updates to the current selection
    */
-  eventSource: string;
+  eventSource?: string;
 }
 
 export interface RangeSelectionStateManagement {
