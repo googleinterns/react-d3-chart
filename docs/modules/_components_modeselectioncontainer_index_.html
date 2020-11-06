@@ -78,6 +78,12 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-not-exported">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported"><a href="../interfaces/_components_modeselectioncontainer_index_.modeselectionselfprops.html" class="tsd-kind-icon">Mode<wbr>Selection<wbr>Self<wbr>Props</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported"><a href="_components_modeselectioncontainer_index_.html#props" class="tsd-kind-icon">Props</a></li>
@@ -97,10 +103,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
 					<a name="props" class="tsd-anchor"></a>
 					<h3>Props</h3>
-					<div class="tsd-signature tsd-kind-icon">Props<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_.modetypestatemanagement.html" class="tsd-signature-type">ModeTypeStateManagement</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"width"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.rangeselectionstate.html" class="tsd-signature-type">RangeSelectionState</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"selection"</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">Props<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_components_modeselectioncontainer_index_.modeselectionselfprops.html" class="tsd-signature-type">ModeSelectionSelfProps</a><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/_types_.modetypestatemanagement.html" class="tsd-signature-type">ModeTypeStateManagement</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"width"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.rangeselectionstate.html" class="tsd-signature-type">RangeSelectionState</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"selection"</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/googleinterns/react-d3-chart/blob/f2a2092/react-d3-chart/src/components/ModeSelectionContainer/index.tsx#L16">components/ModeSelectionContainer/index.tsx:16</a></li>
+							<li>Defined in <a href="https://github.com/googleinterns/react-d3-chart/blob/f85a901/react-d3-chart/src/components/ModeSelectionContainer/index.tsx#L30">components/ModeSelectionContainer/index.tsx:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -116,13 +122,13 @@
 					<a name="modeselectioncontainer" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Mode<wbr>Selection<wbr>Container</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">Mode<wbr>Selection<wbr>Container<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a><span class="tsd-signature-symbol">; </span>selectMode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>selection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Element</span></li>
+						<li class="tsd-signature tsd-kind-icon">Mode<wbr>Selection<wbr>Container<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a><span class="tsd-signature-symbol">; </span>onConfirmSelection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>selection<span class="tsd-signature-symbol">: </span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>rangeSelections<span class="tsd-signature-symbol">: </span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>selectMode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>selection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>setRangeSelectionState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>rangeSelectionState<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.rangeselectionstate.html" class="tsd-signature-type">RangeSelectionState</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>setRangeSelections<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>rangeSelections<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Element</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/googleinterns/react-d3-chart/blob/f2a2092/react-d3-chart/src/components/ModeSelectionContainer/index.tsx#L21">components/ModeSelectionContainer/index.tsx:21</a></li>
+									<li>Defined in <a href="https://github.com/googleinterns/react-d3-chart/blob/f85a901/react-d3-chart/src/components/ModeSelectionContainer/index.tsx#L35">components/ModeSelectionContainer/index.tsx:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -133,10 +139,34 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a><span class="tsd-signature-symbol">; </span>selectMode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>selection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a><span class="tsd-signature-symbol">; </span>onConfirmSelection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>selection<span class="tsd-signature-symbol">: </span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>rangeSelections<span class="tsd-signature-symbol">: </span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>selectMode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>selection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>setRangeSelectionState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>rangeSelectionState<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.rangeselectionstate.html" class="tsd-signature-type">RangeSelectionState</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>setRangeSelections<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>rangeSelections<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
 											<h5>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>on<wbr>Confirm<wbr>Selection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>selection<span class="tsd-signature-symbol">: </span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+											<ul class="tsd-parameters">
+												<li class="tsd-parameter-signature">
+													<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+														<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>selection<span class="tsd-signature-symbol">: </span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+													</ul>
+													<ul class="tsd-descriptions">
+														<li class="tsd-description">
+															<h4 class="tsd-parameters-title">Parameters</h4>
+															<ul class="tsd-parameters">
+																<li>
+																	<h5>selection: <a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a></h5>
+																</li>
+															</ul>
+															<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li class="tsd-parameter">
+											<h5>range<wbr>Selections<span class="tsd-signature-symbol">: </span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">[]</span></h5>
 										</li>
 										<li class="tsd-parameter">
 											<h5>select<wbr>Mode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>mode<span class="tsd-signature-symbol">: </span><a href="_types_.html#modetypes" class="tsd-signature-type">ModeTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
@@ -163,6 +193,48 @@
 											<h5>selection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></h5>
 										</li>
 										<li class="tsd-parameter">
+											<h5>set<wbr>Range<wbr>Selection<wbr>State<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>rangeSelectionState<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.rangeselectionstate.html" class="tsd-signature-type">RangeSelectionState</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+											<ul class="tsd-parameters">
+												<li class="tsd-parameter-signature">
+													<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+														<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>rangeSelectionState<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.rangeselectionstate.html" class="tsd-signature-type">RangeSelectionState</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+													</ul>
+													<ul class="tsd-descriptions">
+														<li class="tsd-description">
+															<h4 class="tsd-parameters-title">Parameters</h4>
+															<ul class="tsd-parameters">
+																<li>
+																	<h5>rangeSelectionState: <a href="../interfaces/_types_.rangeselectionstate.html" class="tsd-signature-type">RangeSelectionState</a></h5>
+																</li>
+															</ul>
+															<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li class="tsd-parameter">
+											<h5>set<wbr>Range<wbr>Selections<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>rangeSelections<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+											<ul class="tsd-parameters">
+												<li class="tsd-parameter-signature">
+													<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+														<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>rangeSelections<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+													</ul>
+													<ul class="tsd-descriptions">
+														<li class="tsd-description">
+															<h4 class="tsd-parameters-title">Parameters</h4>
+															<ul class="tsd-parameters">
+																<li>
+																	<h5>rangeSelections: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="_types_.html#trangeselection" class="tsd-signature-type">TRangeSelection</a><span class="tsd-signature-symbol">&gt;</span></h5>
+																</li>
+															</ul>
+															<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li class="tsd-parameter">
 											<h5>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 										</li>
 									</ul>
@@ -187,6 +259,9 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../interfaces/_components_modeselectioncontainer_index_.modeselectionselfprops.html" class="tsd-kind-icon">Mode<wbr>Selection<wbr>Self<wbr>Props</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
 						<a href="_components_modeselectioncontainer_index_.html#props" class="tsd-kind-icon">Props</a>
 					</li>
