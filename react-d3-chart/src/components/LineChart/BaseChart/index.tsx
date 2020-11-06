@@ -15,11 +15,14 @@ import {
   RangeSelectionStateManagement,
   DomainStateManagement,
   ModeTypeStateManagement,
+  TRangeSelection,
 } from '../../../types';
 import Overlay from '../..//Overlay';
 import Context from '../../Context';
 import LineContainer from '../../LineContainer';
 import { DEFAULT_COLOR } from '../../../theme';
+import { googleColor20c } from '../../../utils';
+
 
 const CONTEXT_HEIGHT = 40;
 
@@ -29,6 +32,8 @@ export interface BaseChartSelfProps {
   filteredData: Array<LineProps>;
   /** Data points to be rendered as lines in the context */
   contextData: Array<LineProps>;
+  /** Selected ranges */
+  rangeSelections: Array<TRangeSelection>;
 }
 
 /** All BaseLineChart's Props */
@@ -70,6 +75,7 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
   setDomainState,
   mode = 'intersection',
   tooltipEntryHeight,
+  rangeSelections
 }) => {
   const svgRef = useRef<SVGGElement>();
   const [zoomState, setZoomState] = useState<{
@@ -151,6 +157,13 @@ export const BaseChart: React.FC<BaseLineChartProps> = ({
         />
         <Axis x={0} y={0} scale={yScale} type="Left" />
         <Axis x={0} y={height} scale={xScale} type="Bottom" />
+        {rangeSelections.map((range, i) => {
+          return <rect key={i}
+                       x={xScale(range[0])}
+                       width={xScale(range[1]) - xScale(range[0])}
+                       height={height}
+                       style={{fill: `${googleColor20c(i)}`, zIndex: -99+i, opacity: 0.3}} />
+        })}
         <Overlay
           width={width}
           height={height}

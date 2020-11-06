@@ -13,6 +13,7 @@ import {
   CommonProps,
   Domains,
   ModeTypes,
+  TRangeSelection,
 } from '../../types';
 import { DEFAULT_COLOR } from '../../theme';
 import { downSample, getDomain } from '../../utils';
@@ -33,8 +34,8 @@ interface State {
 export interface LineChartSelfProps {
   /** Current graph view mode */
   viewMode?: 'overlapped' | 'stacked';
-  /** Callback called when a selection is made in range selection mode */
-  selectionCallback?: (selection: RangeSelectionState['selection']) => void;
+  /** Callback called when confirmed rangeSelections change */
+  selectionCallback?: (selections: Array<TRangeSelection>) => void;
   /** Padding to add to either end of the yDomain */
   yDomainPadding?: number;
   /** Maximum number of points to be displayed in the context per line */
@@ -109,6 +110,8 @@ export const LineChart: React.FC<LineChartProps> = ({
   const [rangeSelectionState, setRangeSelectionState] = useState<
     RangeSelectionState
   >({ selection: [0, 0], eventSource: '' });
+  const [rangeSelections, setRangeSelections] = useState<Array<TRangeSelection>>([]);
+
   const [domainState, setDomainState] = useState<DomainState>({
     selectedDomain: derivedXDomain,
     eventSource: '',
@@ -147,11 +150,8 @@ export const LineChart: React.FC<LineChartProps> = ({
   };
 
   useEffect(() => {
-    const { selection } = rangeSelectionState;
-    if (selectionCallback && selection[1] - selection[0] > 0) {
-      selectionCallback(selection);
-    }
-  }, [selectionCallback, rangeSelectionState.selection]);
+    selectionCallback(rangeSelections);
+  }, [selectionCallback, rangeSelections]);
 
   useEffect(() => {
     setDomainState({
@@ -191,6 +191,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         setDomainState={changeDomain}
         rangeSelectionState={rangeSelectionState}
         setRangeSelectionState={setRangeSelectionState}
+        rangeSelections={rangeSelections}
         tooltipEntryHeight={tooltipEntryHeight}
         mode={mode}
         key={`linechart-${index}`}
@@ -199,7 +200,15 @@ export const LineChart: React.FC<LineChartProps> = ({
         selectMode={changeMode}
         width={width + margin.left + margin.right}
         mode={mode}
+        setRangeSelectionState={setRangeSelectionState}
         selection={rangeSelectionState.selection}
+        rangeSelections={rangeSelections}
+        setRangeSelections={setRangeSelections}
+        onConfirmSelection={(selection: TRangeSelection) => {
+          setRangeSelections(
+            [...rangeSelections, selection]
+          );
+        }}
       />
     </div>
   );

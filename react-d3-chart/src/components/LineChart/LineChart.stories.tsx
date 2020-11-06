@@ -29,8 +29,8 @@ storiesOf('LineChart', module).add('Overlapped', () => (
     data={data}
     viewMode={'overlapped'}
     margin={{ top: 50, left: 50, right: 50, bottom: 50 }}
-    selectionCallback={(selection) => {
-      console.log(selection);
+    selectionCallback={(selections) => {
+      console.log(selections);
     }}
   />
 ));
